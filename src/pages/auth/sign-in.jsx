@@ -14,7 +14,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-900 to-black py-32">
+    <div className="bg-gradient-to-b from-blue-900 to-black py-32 h-screen">
       <div className="px-6 pt-24">
         <div className="grid md:grid-cols-2 grid-cols-1 items-center">
           <div className="colum1">
