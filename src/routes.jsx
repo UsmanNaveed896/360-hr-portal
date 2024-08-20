@@ -35,14 +35,14 @@ const routes = () => {
           path: '/home',
           element: <Home />,
         },
-        {
-          icon: <UserCircleIcon {...icon} />,
-          name: 'Users',
-          path: '/users',
-          element: <Tables />,
-          condition: role === 'superAdmin',
+        // {
+        //   icon: <UserCircleIcon {...icon} />,
+        //   name: 'Users',
+        //   path: '/users',
+        //   element: <Tables />,
+        //   condition: role === 'superAdmin',
        
-        },
+        // },
         // {
         //   icon: <InformationCircleIcon {...icon} />,
         //   name: 'Permissions',
@@ -79,14 +79,14 @@ const routes = () => {
           condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
 
         },
-        {
-          icon: <MdAssignment  {...icon} />,
-          name: 'Assign',
-          path: '/assigned',
-          element: <AssignedForms />,
-          condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
+        // {
+        //   icon: <MdAssignment  {...icon} />,
+        //   name: 'Assign',
+        //   path: '/assigned',
+        //   element: <AssignedForms />,
+        //   condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
 
-        },
+        // },
       ].filter(route => route.condition !== false), 
     },
 
