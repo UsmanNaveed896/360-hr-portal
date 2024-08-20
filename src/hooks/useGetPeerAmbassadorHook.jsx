@@ -18,7 +18,7 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend-api.my360tribe.org/api/v1/peer-ambassador", {
+      .get("https://backend.my360tribe.org/api/v1/peer-ambassador", {
         headers,
       })
       .then((res) => {
@@ -45,7 +45,7 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend-api.my360tribe.org/api/v1/peer-ambassador/${data._id}`,data,{headers})
+      .patch(`https://backend.my360tribe.org/api/v1/peer-ambassador/${data._id}`,data,{headers})
       .then((res) => {
   
         if (res?.status == 200) {
@@ -71,7 +71,7 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend-api.my360tribe.org/api/v1/peer-ambassador/${id}`,{headers})
+      .delete(`https://backend.my360tribe.org/api/v1/peer-ambassador/${id}`,{headers})
       .then((res) => {
 
         if (res?.status == 204) {

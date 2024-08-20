@@ -18,7 +18,7 @@ export const useRegisterHook = () => {
     };
 
     axios
-      .post("https://backend-api.my360tribe.org/api/v1/users/login", payLoad)
+      .post("https://backend.my360tribe.org/api/v1/users/login", payLoad)
       .then((res) => {
         if (res?.status == 200) {
           console.log(res, "response");
@@ -62,7 +62,7 @@ export const useRegisterHook = () => {
   const handleSignup = (data) => {
     setLoading(true);
     axios
-      .post("https://backend-api.my360tribe.org/api/v1/users/signup", data)
+      .post("https://backend.my360tribe.org/api/v1/users/signup", data)
       .then((res) => {
         console.log(res, "response");
         if (res?.status == 201) {

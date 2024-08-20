@@ -18,7 +18,7 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend-api.my360tribe.org/api/v1/concierge", {
+      .get("https://backend.my360tribe.org/api/v1/concierge", {
         headers,
       })
       .then((res) => {
@@ -45,7 +45,7 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend-api.my360tribe.org/api/v1/concierge/${data._id}`,data,{headers})
+      .patch(`https://backend.my360tribe.org/api/v1/concierge/${data._id}`,data,{headers})
       .then((res) => {
   
         if (res?.status == 200) {
@@ -71,7 +71,7 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend-api.my360tribe.org/api/v1/concierge/${id}`,{headers})
+      .delete(`https://backend.my360tribe.org/api/v1/concierge/${id}`,{headers})
       .then((res) => {
 
         if (res?.status == 204) {
