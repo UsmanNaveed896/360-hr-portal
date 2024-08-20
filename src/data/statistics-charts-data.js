@@ -109,7 +109,7 @@ export const statisticsChartsData = [
     color: "white",
     title: "Users",
     chart: websiteViewsChart,
-    roles: ["superAdmin"], 
+    // roles: ["superAdmin"], 
   },
   {
     color: "white",
@@ -117,7 +117,7 @@ export const statisticsChartsData = [
     // description: "15% increase in today sales",
     // footer: "updated 4 min ago",
     chart: dailySalesChart,
-    roles: ["superAdmin"], 
+    // roles: ["superAdmin"], 
   },
   {
     color: "white",
@@ -125,7 +125,7 @@ export const statisticsChartsData = [
     // description: "Last Campaign Performance",
     // footer: "just updated",
     chart: completedTasksChart,
-    roles: ["superAdmin"], 
+    // roles: ["superAdmin"], 
   },
   {
     color: "white",
@@ -133,7 +133,7 @@ export const statisticsChartsData = [
     // description: "Last Campaign Performance",
     // footer: "campaign sent 2 days ago",
     chart: websiteViewsChart,
-    roles: ["superAdmin"], 
+    // roles: ["superAdmin"], 
   },
   {
     color: "white",
@@ -141,7 +141,7 @@ export const statisticsChartsData = [
     // description: "15% increase in today sales",
     // footer: "updated 4 min ago",
     chart: dailySalesChart,
-    roles: ["superAdmin"], 
+    // roles: ["superAdmin"], 
   },
   {
     color: "white",

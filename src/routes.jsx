@@ -55,28 +55,28 @@ const routes = () => {
           name: 'Operators',
           path: '/operator',
           element: <Operator />,
-          condition: role === 'superAdmin' || role === 'operator' || role === 'admin',
+          // condition: role === 'superAdmin' || role === 'operator' || role === 'admin',
         },
         {
           icon: <MdOutlineReduceCapacity {...icon} />,
           name: 'Concierge',
           path: '/concierge',
           element: <Conceirge />,
-          condition: role === 'superAdmin' || role === 'concierge' || role === 'admin',
+          // condition: role === 'superAdmin' || role === 'concierge' || role === 'admin',
         },
         {
           icon: <MdSupervisedUserCircle {...icon} />,
           name: 'Peer Ambassador',
           path: '/peerAmbassador',
           element: <PeerAmbassador />,
-          condition: role === 'superAdmin' || role === 'peerAmbassador' || role === 'admin',
+          // condition: role === 'superAdmin' || role === 'peerAmbassador' || role === 'admin',
         },
         {
           icon: <FaUsers {...icon} />,
           name: 'Service Partners',
           path: '/servicePartner',
           element: <ServicePartners />,
-          condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
+          // condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
 
         },
         // {
