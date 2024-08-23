@@ -18,13 +18,13 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend.my360tribe.org/api/v1/concierge", {
+      .get("https://task-sk2q.onrender.com/concierge/get-concierges", {
         headers,
       })
       .then((res) => {
-        console.log(res, "operator");
+        console.log(res, "concierge");
         if (res?.status == 200) {
-            setGetConcierge(res?.data?.data?.concierges)
+            setGetConcierge(res?.data?.data)
             setConciergeCount(res?.data?.results)
           setLoading(false);
         } else {
@@ -45,7 +45,7 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend.my360tribe.org/api/v1/concierge/${data._id}`,data,{headers})
+      .put(`https://task-sk2q.onrender.com/concierge/update-concierge`,data,{headers})
       .then((res) => {
   
         if (res?.status == 200) {
@@ -71,7 +71,7 @@ export const useGetConciergeHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend.my360tribe.org/api/v1/concierge/${id}`,{headers})
+      .delete(`https://backend-api.my360tribe.org/api/v1/concierge/${id}`,{headers})
       .then((res) => {
 
         if (res?.status == 204) {

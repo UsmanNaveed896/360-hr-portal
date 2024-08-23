@@ -7,8 +7,8 @@ import axios from "axios";
 export const useGetOperatorHook = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [getOperators,setGetOperators]=useState();
-  const [operatorCount,setOperatorCount]=useState();
+  const [getOperators, setGetOperators] = useState();
+  const [operatorCount, setOperatorCount] = useState();
   const [loginResponse, setLoginResponse] = useState();
   let token = localStorage.getItem("token");
 
@@ -18,14 +18,14 @@ export const useGetOperatorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend.my360tribe.org/api/v1/operator-intake", {
+      .get("https://task-sk2q.onrender.com/operators/get-operators", {
         headers,
       })
       .then((res) => {
         console.log(res, "operator");
         if (res?.status == 200) {
-          setGetOperators(res?.data?.data?.operatorIntakes)
-          setOperatorCount(res?.data?.results)
+          setGetOperators(res?.data?.data);
+          setOperatorCount(res?.data?.results);
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -35,23 +35,24 @@ export const useGetOperatorHook = () => {
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
-      
       });
   };
   const handleEditOperatorForm = (data) => {
-    setLoginResponse(false)
+    setLoginResponse(false);
     setLoading(true);
     let headers = {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend.my360tribe.org/api/v1/operator-intake/${data._id}`,data,{headers})
+      .put(
+        `https://task-sk2q.onrender.com/operators/update-operator`,
+        data,
+        { headers }
+      )
       .then((res) => {
-  
         if (res?.status == 200) {
-        
-        toast.success("Form Updated Successfully!")
-        setLoginResponse(true)
+          toast.success("Form Updated Successfully!");
+          setLoginResponse(true);
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -65,20 +66,22 @@ export const useGetOperatorHook = () => {
       });
   };
   const handleDelete = (id) => {
-    setLoginResponse(false)
+    setLoginResponse(false);
     setLoading(true);
     let headers = {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend.my360tribe.org/api/v1/operator-intake/${id}`,{headers})
+      .delete(
+        `https://task-sk2q.onrender.com/operators/delete-operator/${id}`,
+        { headers }
+      )
       .then((res) => {
+        console.log(res,"delete")
+        if (res?.status == 200) {
+          toast.success("Form Deleted Successfully!");
+          setLoginResponse(true);
 
-        if (res?.status == 204) {
-        
-        toast.success("Form Deleted Successfully!")
-        setLoginResponse(true)
-    
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -88,7 +91,33 @@ export const useGetOperatorHook = () => {
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
-        toast.error(err?.response?.data?.message);
+        toast.error(err?.response?.data?.error);
+      });
+  };
+  const handleAssignOperatortoConcierge = (data,handleCloseAssignModal ) => {
+    setLoginResponse(false);
+    setLoading(true);
+    let headers = {
+      Authorization: "Bearer " + token,
+    };
+    axios
+      .post(`https://task-sk2q.onrender.com/sign/form`, data, { headers })
+      .then((res) => {
+        console.log(res, "res");
+        if (res?.status == 201) {
+          setLoginResponse(true);
+          toast.success(res?.data?.data);
+          setLoading(false);
+          handleCloseAssignModal()
+        } else {
+          toast.error(res?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+        toast.error(err?.response?.data?.error);
       });
   };
   return {
@@ -98,6 +127,7 @@ export const useGetOperatorHook = () => {
     loading,
     loginResponse,
     getOperators,
-    handleDelete
+    handleDelete,
+    handleAssignOperatortoConcierge,
   };
 };

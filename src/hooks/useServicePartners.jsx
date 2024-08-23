@@ -7,8 +7,8 @@ import axios from "axios";
 export const useServicePartnerHook = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [getServicePartner,setServicePartner]=useState();
-  const [partnersCount,setPartnersCount]=useState()
+  const [getServicePartner, setServicePartner] = useState();
+  const [partnersCount, setPartnersCount] = useState();
   const [loginResponse, setLoginResponse] = useState();
   let token = localStorage.getItem("token");
 
@@ -18,14 +18,14 @@ export const useServicePartnerHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend.my360tribe.org/api/v1/service-intake", {
+      .get("https://task-sk2q.onrender.com/service-partners/get-services", {
         headers,
       })
       .then((res) => {
-        console.log(res, "operator");
+        console.log(res, "service");
         if (res?.status == 200) {
-          setServicePartner(res?.data?.data?.serviceIntakes)
-          setPartnersCount(res?.data?.results)
+          setServicePartner(res?.data?.data);
+          setPartnersCount(res?.data?.results);
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -35,23 +35,24 @@ export const useServicePartnerHook = () => {
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
-    
       });
   };
   const handleEditServicePartnerForm = (data) => {
-    setLoginResponse(false)
+    setLoginResponse(false);
     setLoading(true);
     let headers = {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend.my360tribe.org/api/v1/service-intake/${data._id}`,data,{headers})
+      .put(
+        `https://task-sk2q.onrender.com/service-partners/update-service`,
+        data,
+        { headers }
+      )
       .then((res) => {
-  
         if (res?.status == 200) {
-        
-        toast.success("Form Updated Successfully!")
-        setLoginResponse(true)
+          toast.success("Form Updated Successfully!");
+          setLoginResponse(true);
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -65,20 +66,21 @@ export const useServicePartnerHook = () => {
       });
   };
   const handleDelete = (id) => {
-    setLoginResponse(false)
+    setLoginResponse(false);
     setLoading(true);
     let headers = {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend.my360tribe.org/api/v1/service-intake/${id}`,{headers})
+      .delete(
+        `https://backend-api.my360tribe.org/api/v1/service-intake/${id}`,
+        { headers }
+      )
       .then((res) => {
-
         if (res?.status == 204) {
-        
-        toast.success("Form Deleted Successfully!")
-        setLoginResponse(true)
-    
+          toast.success("Form Deleted Successfully!");
+          setLoginResponse(true);
+
           setLoading(false);
         } else {
           toast.error(res?.message);
@@ -98,6 +100,6 @@ export const useServicePartnerHook = () => {
     partnersCount,
     loading,
     loginResponse,
-    handleDelete
+    handleDelete,
   };
 };

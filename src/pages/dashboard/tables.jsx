@@ -21,6 +21,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Avatar from "@mui/material/Avatar";
 import { useForm } from "react-hook-form";
 import { FaUserCircle } from "react-icons/fa";
+import { userData } from "@/data/dummyData";
 
 export function Tables() {
   const usersHook = useGetUsersHook();
@@ -219,7 +220,8 @@ export function Tables() {
               }}
             >
               <DataGrid
-                rows={rows}
+                // rows={rows}
+                rows={userData}
                 columns={columns}
                 pageSize={5}
                 autoWidth

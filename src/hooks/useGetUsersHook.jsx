@@ -17,7 +17,7 @@ export const useGetUsersHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend.my360tribe.org/api/v1/users",{headers})
+      .get("https://backend-api.my360tribe.org/api/v1/users",{headers})
       .then((res) => {
 
         if (res?.status == 200) {
@@ -41,7 +41,7 @@ export const useGetUsersHook = () => {
     setLoginResponse(false)
 
     axios
-      .post("https://backend.my360tribe.org/api/v1/users/signup", data)
+      .post("https://backend-api.my360tribe.org/api/v1/users/signup", data)
       .then((res) => {
         console.log(res, "response");
         if (res?.status == 201) {
@@ -66,7 +66,7 @@ export const useGetUsersHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend.my360tribe.org/api/v1/users/${data.id}`,data,{headers})
+      .patch(`https://backend-api.my360tribe.org/api/v1/users/${data.id}`,data,{headers})
       .then((res) => {
   
         if (res?.status == 200) {
@@ -93,7 +93,7 @@ export const useGetUsersHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend.my360tribe.org/api/v1/users/${id}`,{headers})
+      .delete(`https://backend-api.my360tribe.org/api/v1/users/${id}`,{headers})
       .then((res) => {
 
         if (res?.status == 204) {

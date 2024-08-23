@@ -8,7 +8,7 @@ export const useRegisterHook = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loginResponse, setLoginResponse] = useState();
-  const [userResponse,setUserResponse]=useState()
+  const [userResponse, setUserResponse] = useState();
 
   const handleLogin = (data) => {
     setLoading(true);
@@ -18,33 +18,26 @@ export const useRegisterHook = () => {
     };
 
     axios
-      .post("https://backend.my360tribe.org/api/v1/users/login", payLoad)
+      .post("https://task-sk2q.onrender.com/registration/login", payLoad)
       .then((res) => {
+        console.log(res, "response");
         if (res?.status == 200) {
-          console.log(res, "response");
-
           toast.success("Logged In Successfully");
-          const token = res?.data?.token;
-          const userid = res?.data?.data?.user?._id;
-          const name = res?.data?.data?.user?.fullName;
-          const photo = res?.data?.data?.user?.photo;
-          const role = res?.data?.data?.user?.role?.name;
-          const email = res?.data?.data?.user?.email;
-          const phone = res?.data?.data?.user?.phone;
-          const status = res?.data?.data?.user?.status;
+          const token = res?.data?.response?.data?.token;
+          const userid = res?.data?.response?.data?.id;
+          const name = res?.data?.response?.data?.name;
+          const role = res?.data?.response?.data?.role;
+          const email = res?.data?.response?.data?.email;
 
           localStorage.setItem("role", role);
-          localStorage.setItem("photo", photo);
+
           localStorage.setItem("name", name);
           localStorage.setItem("token", token);
           localStorage.setItem("user_id", userid);
           localStorage.setItem("email", email);
-          localStorage.setItem("phone", phone);
-          localStorage.setItem("status", status);
 
-
-          const response=res?.data?.data
-          setUserResponse(response)
+          const response = res?.data?.data;
+          setUserResponse(response);
           setLoading(false);
           navigate("/dashboard/home");
         } else {
@@ -62,7 +55,7 @@ export const useRegisterHook = () => {
   const handleSignup = (data) => {
     setLoading(true);
     axios
-      .post("https://backend.my360tribe.org/api/v1/users/signup", data)
+      .post("https://backend-api.my360tribe.org/api/v1/users/signup", data)
       .then((res) => {
         console.log(res, "response");
         if (res?.status == 201) {
@@ -80,11 +73,56 @@ export const useRegisterHook = () => {
         toast.error(err?.response?.data?.message);
       });
   };
+  // TESTING
+
+  // const handleLogin = (data) => {
+  //   setLoading(true);
+  //   const payLoad = {
+  //     email: data?.email,
+  //     password: data?.password,
+  //   };
+
+  //   // Hardcoded login check
+  //   if (payLoad.email == "superadmin@gmail.com" && payLoad.password == "pass1234") {
+  //     toast.success("Logged In Successfully");
+
+  //     // Simulate API response data
+  //     const token = "dummyToken123";
+  //     const userid = "dummyUserId";
+  //     const name = "Super Admin";
+  //     const photo = "dummyPhotoUrl";
+  //     const role = "Super Admin";
+  //     const email = payLoad.email;
+  //     const phone = "123-456-7890";
+  //     const status = "Active";
+
+  //     localStorage.setItem("role", role);
+  //     localStorage.setItem("photo", photo);
+  //     localStorage.setItem("name", name);
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("user_id", userid);
+  //     localStorage.setItem("email", email);
+  //     localStorage.setItem("phone", phone);
+  //     localStorage.setItem("status", status);
+
+  //     const response = {
+  //       token,
+  //       user: { _id: userid, fullName: name, photo, role: { name: role }, email, phone, status },
+  //     };
+  //     setUserResponse(response);
+  //     setLoading(false);
+  //     navigate("/dashboard/home");
+  //   } else {
+  //     toast.error("Invalid email or password");
+  //     setLoading(false);
+  //   }
+  // };
+
   return {
     handleLogin,
     handleSignup,
     loading,
     loginResponse,
-    userResponse
+    userResponse,
   };
 };

@@ -12,7 +12,7 @@ export const statisticsCardsData = [
       color: "text-green-500",
       label: "Users",
     },
-    // roles: ["superAdmin"], 
+    roles: ["SUPERADMINn"], 
   },
   {
     color: "gray",
@@ -23,7 +23,7 @@ export const statisticsCardsData = [
       color: "text-green-500",
       label: "Concierge",
     },
-    // roles: ["superAdmin"], 
+    roles: ["SUPERADMINn"], 
   },
   {
     color: "gray",
@@ -34,7 +34,7 @@ export const statisticsCardsData = [
       color: "text-red-500",
       label: "Operators",
     },
-    // roles: ["superAdmin"], 
+    roles: ["SUPERADMIN"], 
   },
   {
     color: "gray",
@@ -45,7 +45,7 @@ export const statisticsCardsData = [
       color: "text-blue-500",
       label: "Peer Ambassadors",
     },
-    // roles: ["superAdmin"], 
+    roles: ["SUPERADMINn"], 
   },
   {
     color: "gray",
@@ -56,7 +56,7 @@ export const statisticsCardsData = [
       color: "text-blue-500",
       label: "Service Partners",
     },
-    // roles: ["superAdmin"], 
+    roles: ["SUPERADMINn"], 
   },
   {
     color: "gray",

@@ -1,0 +1,178 @@
+// src/dummyData.js
+
+export const userData = [
+    {
+      id: 1,
+      fullName: "John Doe",
+      email: "johndoe@example.com",
+      phone: "123-456-7890",
+      status: "Active",
+    },
+    {
+      id: 2,
+      fullName: "Jane Smith",
+      email: "janesmith@example.com",
+      phone: "098-765-4321",
+      status: "Inactive",
+    },
+    {
+      id: 3,
+      fullName: "Michael Johnson",
+      email: "michaelj@example.com",
+      phone: "555-555-5555",
+      status: "Pending",
+    },
+    {
+      id: 4,
+      fullName: "Emily Davis",
+      email: "emilydavis@example.com",
+      phone: "111-222-3333",
+      status: "Active",
+    },
+  ];
+  
+  // src/dummyEmployeeData.js
+
+export const employeeData = [
+    {
+      id: 1,
+      fullName: "Alice Johnson",
+      DOB: "1985-05-12",
+      department: "Engineering",
+      subdomain: "Frontend",
+      employed: "Yes",
+      location: "New York",
+    },
+    {
+      id: 2,
+      fullName: "Bob Smith",
+      DOB: "1990-07-23",
+      department: "Marketing",
+      subdomain: "Digital",
+      employed: "No",
+      location: "San Francisco",
+    },
+    {
+      id: 3,
+      fullName: "Carol White",
+      DOB: "1982-11-08",
+      department: "Human Resources",
+      subdomain: "Recruitment",
+      employed: "Yes",
+      location: "Chicago",
+    },
+    {
+      id: 4,
+      fullName: "David Brown",
+      DOB: "1978-01-15",
+      department: "Finance",
+      subdomain: "Accounts",
+      employed: "No",
+      location: "Miami",
+    },
+  ];
+  // src/dummyServiceData.js
+
+export const serviceData = [
+    {
+      id: 1,
+      fullName: "John Doe",
+      branchOfService: "Air Force AFSOC",
+      contactMethod: "Email",
+      source: "Referral",
+      reason: "Technical Support",
+      noOfHr: 5,
+      organization: "Tech Corp",
+      supportAreas: "IT Support",
+      topics: "Network Issues",
+    },
+    {
+      id: 2,
+      fullName: "Jane Smith",
+      branchOfService: "Army USASOC",
+      contactMethod: "Phone",
+      source: "Advertisement",
+      reason: "Consultation",
+      noOfHr: 3,
+      organization: "Consultancy Group",
+      supportAreas: "Business Strategy",
+      topics: "Market Analysis",
+    },
+    {
+      id: 3,
+      fullName: "Alice Johnson",
+      branchOfService: "Navy NSW NSO",
+      contactMethod: "In-person",
+      source: "Website",
+      reason: "Training",
+      noOfHr: 7,
+      organization: "Training Hub",
+      supportAreas: "Skill Development",
+      topics: "Leadership Training",
+    },
+    {
+      id: 4,
+      fullName: "Michael Brown",
+      branchOfService: "Marines MARSOC",
+      contactMethod: "Video Call",
+      source: "Social Media",
+      reason: "Project Management",
+      noOfHr: 4,
+      organization: "Project Masters",
+      supportAreas: "Project Planning",
+      topics: "Agile Methodologies",
+    },
+  ];
+  // src/dummyServiceData.js
+
+export const peerAmbassador = [
+    {
+      id: 1,
+      fullName: "Emma Williams",
+      branchOfService: "Navy NSW NSO",
+      contactMethod: "Email",
+      source: "Conference",
+      reason: "Training",
+      noOfHr: 6,
+      organization: "Marine Academy",
+      supportAreas: "Technical Skills",
+      topics: "Cybersecurity",
+    },
+    {
+      id: 2,
+      fullName: "Liam Taylor",
+      branchOfService: "Air Force AFSOC",
+      contactMethod: "Phone",
+      source: "Referral",
+      reason: "Consultation",
+      noOfHr: 4,
+      organization: "Aero Consultants",
+      supportAreas: "Aviation Support",
+      topics: "Flight Operations",
+    },
+    {
+      id: 3,
+      fullName: "Olivia Martinez",
+      branchOfService: "Army USASOC",
+      contactMethod: "In-person",
+      source: "Job Fair",
+      reason: "Recruitment",
+      noOfHr: 8,
+      organization: "Global Defense",
+      supportAreas: "Human Resources",
+      topics: "Talent Acquisition",
+    },
+    {
+      id: 4,
+      fullName: "Noah Johnson",
+      branchOfService: "Marines MARSOC",
+      contactMethod: "Video Call",
+      source: "Website",
+      reason: "Project Management",
+      noOfHr: 5,
+      organization: "Strategic Solutions",
+      supportAreas: "Leadership",
+      topics: "Team Coordination",
+    },
+  ];
+  

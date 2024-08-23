@@ -23,13 +23,17 @@ import { Puff } from "react-loader-spinner";
 import { MdDelete, MdEdit, MdVisibility } from "react-icons/md";
 
 import { useServicePartnerHook } from "@/hooks/useServicePartners";
+import { FaRegSave } from "react-icons/fa";
+import { useGetOperatorHook } from "@/hooks/useGetOperatorHook";
 
 const ServicePartners = () => {
+  const getOperatorksHook = useGetOperatorHook();
+
   const getService = useServicePartnerHook();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [rowData, setRowData] = useState();
   useEffect(() => {
     getService.handleGetServicePartner();
     if (getService.loginResponse) {
@@ -58,23 +62,56 @@ const ServicePartners = () => {
   };
 
   const handleSaveChanges = () => {
-    console.log(selectedUser, "users");
     getService.handleEditServicePartnerForm(selectedUser);
+    handleCloseEditModal();
   };
 
   const handleDelete = (id) => {
     getService.handleDelete(id);
   };
+  const handleAssigntoConcierge = (value, row) => {
+    if (row == "concierge") {
+      let payLoad = {
+        ...value,
+        signed_from: "service_partners",
+        signed_to: "concierge",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    } else if (row == "peerAmbassador") {
+      let payLoad = {
+        ...value,
+        signed_from: "service_partners",
+        signed_to: "peer_ambassador",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    } else {
+      let payLoad = {
+        ...value,
+        signed_from: "service_partners",
+        signed_to: "operators",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    }
+  };
 
+  const handleSave = () => {
+    getOperatorksHook.handleAssignOperatortoConcierge(rowData);
+  };
   const columns = [
     {
-      field: "organizationName",
+      field: "organization_name",
       headerName: "Organization Name",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "phone",
+      field: "phone_number",
       headerName: "Phone",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
@@ -86,7 +123,7 @@ const ServicePartners = () => {
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "websiteUrl",
+      field: "web_url",
       headerName: "Website",
       headerClassName: "bg-[#000032] text-white",
       width: 150,
@@ -97,31 +134,31 @@ const ServicePartners = () => {
       ),
     },
     {
-      field: "pointOfContactName",
+      field: "point_of_contact_name",
       headerName: "Point of Contact",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "pointOfContactEmail",
+      field: "point_of_contact_email",
       headerName: "Point of Contact Email",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "howHeardAboutUs",
+      field: "how_heard_about_us",
       headerName: "How Heard About Us",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "veteranSpecificServices",
+      field: "veteran_specific_services",
       headerName: "Veteran Specific Services",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "servicesProvided",
+      field: "service_provided",
       headerName: "Services Provided",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
@@ -138,7 +175,7 @@ const ServicePartners = () => {
       headerClassName: "bg-[#000032] text-white",
       width: 200,
       renderCell: (params) => (
-        <div className="">
+        <div className=" text-white flex gap-3 items-center">
           <FormControl sx={{ width: "150px" }}>
             <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
               Assign To
@@ -148,6 +185,9 @@ const ServicePartners = () => {
               id="demo-simple-select"
               variant="standard"
               label="Age"
+              onChange={(event) =>
+                handleAssigntoConcierge(params.row, event.target.value)
+              }
               sx={{
                 color: "white", // Changes the selected text color
                 "& .MuiSvgIcon-root": {
@@ -155,11 +195,19 @@ const ServicePartners = () => {
                 },
               }}
             >
-              <MenuItem value={10}>Concierge</MenuItem>
-              <MenuItem value={20}>Peer Ambassador</MenuItem>
-              <MenuItem value={30}>Operator</MenuItem>
+              <MenuItem value={"concierge"}>Concierge</MenuItem>
+              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+              <MenuItem value={"operator"}>Operator</MenuItem>
             </Select>
           </FormControl>
+          {rowData ? (
+            <FaRegSave
+              className="w-4 h-4 mt-4 cursor-pointer"
+              onClick={handleSave}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ),
     },
@@ -265,17 +313,17 @@ const ServicePartners = () => {
       </Card>
 
       <Dialog open={openEditModal} onClose={handleCloseEditModal}>
-        <DialogTitle>Edit {selectedUser?.organizationName}</DialogTitle>
+        <DialogTitle>Edit {selectedUser?.organization_name}</DialogTitle>
         <DialogContent>
           {selectedUser && (
             <>
               <TextField
                 label="Organization Name"
-                value={selectedUser.organizationName}
+                value={selectedUser.organization_name}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    organizationName: e.target.value,
+                    organization_name: e.target.value,
                   })
                 }
                 fullWidth
@@ -283,9 +331,12 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Phone"
-                value={selectedUser.phone}
+                value={selectedUser.phone_number}
                 onChange={(e) =>
-                  setSelectedUser({ ...selectedUser, phone: e.target.value })
+                  setSelectedUser({
+                    ...selectedUser,
+                    phone_number: e.target.value,
+                  })
                 }
                 fullWidth
                 margin="dense"
@@ -301,11 +352,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Website"
-                value={selectedUser.websiteUrl}
+                value={selectedUser.web_url}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    websiteUrl: e.target.value,
+                    web_url: e.target.value,
                   })
                 }
                 fullWidth
@@ -313,11 +364,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Point of Contact"
-                value={selectedUser.pointOfContactName}
+                value={selectedUser.point_of_contact_name}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    pointOfContactName: e.target.value,
+                    point_of_contact_name: e.target.value,
                   })
                 }
                 fullWidth
@@ -325,11 +376,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Point of Contact Email"
-                value={selectedUser.pointOfContactEmail}
+                value={selectedUser.point_of_contact_email}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    pointOfContactEmail: e.target.value,
+                    point_of_contact_email: e.target.value,
                   })
                 }
                 fullWidth
@@ -337,11 +388,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="How Heard About Us"
-                value={selectedUser.howHeardAboutUs}
+                value={selectedUser.how_heard_about_us}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    howHeardAboutUs: e.target.value,
+                    how_heard_about_us: e.target.value,
                   })
                 }
                 fullWidth
@@ -349,11 +400,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Veteran Specific Services"
-                value={selectedUser.veteranSpecificServices}
+                value={selectedUser.veteran_specific_services}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    veteranSpecificServices: e.target.value,
+                    veteran_specific_services: e.target.value,
                   })
                 }
                 fullWidth
@@ -361,11 +412,11 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Services Provided"
-                value={selectedUser.servicesProvided}
+                value={selectedUser.service_provided}
                 onChange={(e) =>
                   setSelectedUser({
                     ...selectedUser,
-                    servicesProvided: e.target.value,
+                    service_provided: e.target.value,
                   })
                 }
                 fullWidth
@@ -401,20 +452,21 @@ const ServicePartners = () => {
       </Dialog>
 
       <Dialog open={openViewModal} onClose={handleCloseViewModal}>
-        <DialogTitle>Viewing {selectedUser?.organizationName}</DialogTitle>
+        {console.log(selectedUser, "user")}
+        <DialogTitle>Viewing {selectedUser?.organization_name}</DialogTitle>
         <DialogContent>
           {selectedUser && (
             <>
               <TextField
                 label="Organization Name"
-                value={selectedUser.organizationName}
+                value={selectedUser.organization_name}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="Phone"
-                value={selectedUser.phone}
+                value={selectedUser.phone_number}
                 fullWidth
                 margin="dense"
                 readOnly
@@ -428,42 +480,42 @@ const ServicePartners = () => {
               />
               <TextField
                 label="Website"
-                value={selectedUser.websiteUrl}
+                value={selectedUser.web_url}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="Point of Contact"
-                value={selectedUser.pointOfContactName}
+                value={selectedUser.point_of_contact_name}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="Point of Contact Email"
-                value={selectedUser.pointOfContactEmail}
+                value={selectedUser.point_of_contact_email}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="How Heard About Us"
-                value={selectedUser.howHeardAboutUs}
+                value={selectedUser.how_heard_about_us}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="Veteran Specific Services"
-                value={selectedUser.veteranSpecificServices}
+                value={selectedUser.veteran_specific_services}
                 fullWidth
                 margin="dense"
                 readOnly
               />
               <TextField
                 label="Services Provided"
-                value={selectedUser.servicesProvided}
+                value={selectedUser.service_provided}
                 fullWidth
                 margin="dense"
                 readOnly

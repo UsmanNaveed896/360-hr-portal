@@ -18,13 +18,13 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://backend.my360tribe.org/api/v1/peer-ambassador", {
+      .get("https://task-sk2q.onrender.com/peer-ambassadors/get-peers", {
         headers,
       })
       .then((res) => {
-        console.log(res, "operator");
+        console.log(res, "peer");
         if (res?.status == 200) {
-            setGetPeerAmbassador(res?.data?.data?.peerAmbassadors)
+            setGetPeerAmbassador(res?.data?.data)
             setPeerCount(res?.data?.results)
           setLoading(false);
         } else {
@@ -45,7 +45,7 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .patch(`https://backend.my360tribe.org/api/v1/peer-ambassador/${data._id}`,data,{headers})
+      .put(`https://task-sk2q.onrender.com/peer-ambassadors/update-peer`,data,{headers})
       .then((res) => {
   
         if (res?.status == 200) {
@@ -71,7 +71,7 @@ export const useGetPeerAmbassadorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .delete(`https://backend.my360tribe.org/api/v1/peer-ambassador/${id}`,{headers})
+      .delete(`https://backend-api.my360tribe.org/api/v1/peer-ambassador/${id}`,{headers})
       .then((res) => {
 
         if (res?.status == 204) {

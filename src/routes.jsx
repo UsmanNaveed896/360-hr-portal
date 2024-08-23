@@ -40,7 +40,7 @@ const routes = () => {
         //   name: 'Users',
         //   path: '/users',
         //   element: <Tables />,
-        //   condition: role === 'superAdmin',
+        //   condition: role === 'SUPERADMIN',
        
         // },
         // {
@@ -55,36 +55,36 @@ const routes = () => {
           name: 'Operators',
           path: '/operator',
           element: <Operator />,
-          // condition: role === 'superAdmin' || role === 'operator' || role === 'admin',
+          condition: role === 'SUPERADMIN' || role === 'OPERATIONJOBS' || role === 'admin',
         },
-        {
-          icon: <MdOutlineReduceCapacity {...icon} />,
-          name: 'Concierge',
-          path: '/concierge',
-          element: <Conceirge />,
-          // condition: role === 'superAdmin' || role === 'concierge' || role === 'admin',
-        },
-        {
-          icon: <MdSupervisedUserCircle {...icon} />,
-          name: 'Peer Ambassador',
-          path: '/peerAmbassador',
-          element: <PeerAmbassador />,
-          // condition: role === 'superAdmin' || role === 'peerAmbassador' || role === 'admin',
-        },
-        {
-          icon: <FaUsers {...icon} />,
-          name: 'Service Partners',
-          path: '/servicePartner',
-          element: <ServicePartners />,
-          // condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
+        // {
+        //   icon: <MdOutlineReduceCapacity {...icon} />,
+        //   name: 'Concierge',
+        //   path: '/concierge',
+        //   element: <Conceirge />,
+        //   condition: role === 'SUPERADMIN' || role === 'concierge' || role === 'admin',
+        // },
+        // {
+        //   icon: <MdSupervisedUserCircle {...icon} />,
+        //   name: 'Peer Ambassador',
+        //   path: '/peerAmbassador',
+        //   element: <PeerAmbassador />,
+        //   condition: role === 'SUPERADMIN' || role === 'peerAmbassador' || role === 'admin',
+        // },
+        // {
+        //   icon: <FaUsers {...icon} />,
+        //   name: 'Service Partners',
+        //   path: '/servicePartner',
+        //   element: <ServicePartners />,
+        //   condition: role === 'SUPERADMIN' || role === 'servicePartner' || role === 'admin',
 
-        },
+        // },
         // {
         //   icon: <MdAssignment  {...icon} />,
         //   name: 'Assign',
         //   path: '/assigned',
         //   element: <AssignedForms />,
-        //   condition: role === 'superAdmin' || role === 'servicePartner' || role === 'admin',
+        //   condition: role === 'SUPERADMIN' || role === 'servicePartner' || role === 'admin',
 
         // },
       ].filter(route => route.condition !== false), 

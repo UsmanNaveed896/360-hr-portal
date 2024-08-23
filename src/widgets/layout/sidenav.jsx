@@ -33,17 +33,16 @@ export function Sidenav({ brandImg, brandName, routes,setOpen,open }) {
         <div className="flex justify-center">
         <img className="mt-8" src={Img} alt="abc" />
         </div>
-        <Link to="/" className="py-6 px-8 text-center ">
+        <Link to="/" className="py-6 px-8 text-center">
           <Typography
             variant="h5"
             className="uppercase"
             color={sidenavType === "white" ? "dark" : "blue-gray"}
           >
-          <span className="font-bold pr-1 ">WELCOME</span>  HR'S
+          <span className="font-bold pr-1 ">Welcome Operation Jobs</span>  
           </Typography>
         </Link>
         <p className="text-sm text-center hover:underline cursor-pointer" onClick={()=>setOpen(!open)}>View Profile Details</p>
-        {/* pois */}
         <IconButton
           variant="text"
           color="white"

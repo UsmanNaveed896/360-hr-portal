@@ -22,13 +22,17 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 import { Puff } from "react-loader-spinner";
 import { useGetConciergeHook } from "@/hooks/useGetConciergeHook";
+import { serviceData } from "@/data/dummyData";
+import { FaRegSave } from "react-icons/fa";
+import { useGetOperatorHook } from "@/hooks/useGetOperatorHook";
 
 const Concierge = () => {
+  const getOperatorksHook = useGetOperatorHook();
   const concierge = useGetConciergeHook();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [rowData, setRowData] = useState();
   useEffect(() => {
     concierge.handleGetConcierge();
     if (concierge.loginResponse) {
@@ -63,25 +67,66 @@ const Concierge = () => {
   const handleDelete = (id) => {
     concierge.handleDelete(id);
   };
+  const handleAssigntoConcierge = (value, row) => {
+    if (row == "operator") {
+      let payLoad = {
+        ...value,
+        signed_from: "concierge",
+        signed_to: "operator",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    } else if (row == "peerAmbassador") {
+      let payLoad = {
+        ...value,
+        signed_from: "concierge",
+        signed_to: "peer_ambassador",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    } else {
+      let payLoad = {
+        ...value,
+        signed_from: "concierge",
+        signed_to: "service_partners",
+        form_id: value.id,
+        user_id: value.id,
+      };
+      setRowData(payLoad);
+    }
+  };
 
+  const handleSave = () => {
+    getOperatorksHook.handleAssignOperatortoConcierge(rowData);
+  };
+
+  useEffect(() => {
+    concierge.handleGetConcierge();
+  }, [getOperatorksHook.loginResponse]);
   const columns = [
     {
-      field: "fullName",
+      field: "id",
+      headerName: "ID",
+      width: 90,
+      headerClassName: "bg-[#000032] text-white",
+    },
+    {
+      field: "full_name",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Full Name",
       width: 150.5,
       renderCell: (params) => (
         <div>
-          {console.log(params, "params")}
           <Tooltip title={params.value} arrow>
             <Typography className="mt-3 text-sm" noWrap>
               {params.value}
             </Typography>
           </Tooltip>
-          <Tooltip title={params.row.DOB} arrow>
+          <Tooltip title={params.row.birth_date} arrow>
             <Typography className="mt-3 text-sm" noWrap>
-              <span className="font-bold">Dob:</span>{" "}
-              {params.row.DOB.slice(0, 10)}
+              <span className="font-bold">Dob:</span> {params.row.birth_date}
             </Typography>
           </Tooltip>
         </div>
@@ -89,7 +134,7 @@ const Concierge = () => {
     },
 
     {
-      field: "branchOfService",
+      field: "service_branch",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Branch of Service",
       width: 150,
@@ -102,19 +147,19 @@ const Concierge = () => {
       ),
     },
     {
-      field: "contactMethod",
+      field: "contact_number",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Contact Method",
       width: 150,
     },
     {
-      field: "howHeardAboutUs",
+      field: "how_heard_about_us",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Source",
       width: 150,
     },
     {
-      field: "whyConcierge",
+      field: "why_concierge",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Reason",
       width: 150.5,
@@ -127,30 +172,28 @@ const Concierge = () => {
       ),
     },
     {
-      field: "hoursPerMonth",
+      field: "number_of_operators",
       headerClassName: "bg-[#000032] text-white",
       headerName: "No of Hr/Operators",
       width: 150,
       renderCell: (params) => (
-        <Typography className="text-center mt-6">
-          {params.value} / {params.row.numberOfOperators}
-        </Typography>
+        <Typography className="text-center mt-6">{params.value}</Typography>
       ),
     },
     {
-      field: "transitionServices",
+      field: "transition_services",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Organization",
       width: 150,
     },
     {
-      field: "recommendedTransitionServices",
+      field: "areas_of_support",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Support Areas",
       width: 150,
     },
     {
-      field: "uncomfortableTopics",
+      field: "uncomfortable_topics",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Topics",
       width: 150,
@@ -161,36 +204,49 @@ const Concierge = () => {
       headerName: "Assign to",
       width: 200,
       renderCell: (params) => (
-        <div className="mt-3">
+        <div className="mt-3 text-white flex gap-3 items-center">
           <FormControl sx={{ width: "150px" }}>
-            <InputLabel id="demo-simple-select-label" sx={{ color: 'white' }}>Assign To</InputLabel>
+            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+              Assign To
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               variant="standard"
               label="Age"
+              onChange={(event) =>
+                handleAssigntoConcierge(params.row, event.target.value)
+              }
               sx={{
-                color: 'white', // Changes the selected text color
-                '& .MuiSvgIcon-root': {
-                  color: 'white', // Changes the dropdown arrow color
+                color: "white", // Changes the selected text color
+                "& .MuiSvgIcon-root": {
+                  color: "white", // Changes the dropdown arrow color
                 },
               }}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     // Background color of the dropdown
-                    '& .MuiMenuItem-root': {
-                      color: 'black', // Text color of the dropdown options
+                    "& .MuiMenuItem-root": {
+                      color: "black", // Text color of the dropdown options
                     },
                   },
                 },
               }}
             >
-              <MenuItem value={10}>Operators</MenuItem>
-              <MenuItem value={20}>Peer Ambassador</MenuItem>
-              <MenuItem value={30}>Service Partner</MenuItem>
+              <MenuItem value={"operator"}>Operator</MenuItem>
+              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+              <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
             </Select>
           </FormControl>
+          {rowData ? (
+            <FaRegSave
+              className="w-4 h-4 mt-4 cursor-pointer"
+              onClick={handleSave}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ),
     },
@@ -200,7 +256,7 @@ const Concierge = () => {
       headerName: "Actions",
       type: "actions",
       renderCell: (params) => (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-1">
           <MdVisibility
             className="cursor-pointer w-5 h-5"
             onClick={() => handleOpenViewModal(params.row)}
@@ -253,11 +309,12 @@ const Concierge = () => {
               }}
             >
               <DataGrid
-                rows={concierge.getConcierge || []}
+                // rows={serviceData}
+                rows={concierge?.getConcierge || []}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5, 10, 20]}
-                getRowId={(row) => row._id}
+                getRowId={(row) => row.id}
                 disableSelectionOnClick
                 rowHeight={80}
                 sx={{
@@ -296,15 +353,15 @@ const Concierge = () => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Edit {selectedUser?.fullName}</DialogTitle>
+        <DialogTitle>Edit {selectedUser?.full_name}</DialogTitle>
         <DialogContent dividers>
           <div className="mb-4">
             <Input
               type="text"
               label="Full Name"
-              value={selectedUser?.fullName || ""}
+              value={selectedUser?.full_name || ""}
               onChange={(e) =>
-                setSelectedUser({ ...selectedUser, fullName: e.target.value })
+                setSelectedUser({ ...selectedUser, full_name: e.target.value })
               }
               fullWidth
             />
@@ -313,9 +370,9 @@ const Concierge = () => {
             <Input
               type="text"
               label="DOB"
-              value={selectedUser?.DOB?.slice(0, 10) || ""}
+              value={selectedUser?.birth_date || ""}
               onChange={(e) =>
-                setSelectedUser({ ...selectedUser, DOB: e.target.value })
+                setSelectedUser({ ...selectedUser, birth_date: e.target.value })
               }
               fullWidth
             />
@@ -324,11 +381,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Branch of Service"
-              value={selectedUser?.branchOfService || ""}
+              value={selectedUser?.service_branch || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  branchOfService: e.target.value,
+                  service_branch: e.target.value,
                 })
               }
               fullWidth
@@ -338,11 +395,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Contact Method"
-              value={selectedUser?.contactMethod || ""}
+              value={selectedUser?.contact_number || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  contactMethod: e.target.value,
+                  contact_number: e.target.value,
                 })
               }
               fullWidth
@@ -352,11 +409,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Source"
-              value={selectedUser?.howHeardAboutUs || ""}
+              value={selectedUser?.how_heard_about_us || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  howHeardAboutUs: e.target.value,
+                  how_heard_about_us: e.target.value,
                 })
               }
               fullWidth
@@ -366,11 +423,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Reason"
-              value={selectedUser?.whyConcierge || ""}
+              value={selectedUser?.why_concierge || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  whyConcierge: e.target.value,
+                  why_concierge: e.target.value,
                 })
               }
               fullWidth
@@ -380,11 +437,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="No of Hours/Operators"
-              value={selectedUser?.hoursPerMonth || ""}
+              value={selectedUser?.hours_per_month || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  hoursPerMonth: e.target.value,
+                  hours_per_month: e.target.value,
                 })
               }
               fullWidth
@@ -392,11 +449,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Number of Operators"
-              value={selectedUser?.numberOfOperators || ""}
+              value={selectedUser?.number_of_operators || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  numberOfOperators: e.target.value,
+                  number_of_operators: e.target.value,
                 })
               }
               fullWidth
@@ -406,11 +463,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Organization"
-              value={selectedUser?.transitionServices || ""}
+              value={selectedUser?.transition_services || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  transitionServices: e.target.value,
+                  transition_services: e.target.value,
                 })
               }
               fullWidth
@@ -420,11 +477,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Support Areas"
-              value={selectedUser?.recommendedTransitionServices || ""}
+              value={selectedUser?.areas_of_support || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  recommendedTransitionServices: e.target.value,
+                  areas_of_support: e.target.value,
                 })
               }
               fullWidth
@@ -434,11 +491,11 @@ const Concierge = () => {
             <Input
               type="text"
               label="Topics"
-              value={selectedUser?.uncomfortableTopics || ""}
+              value={selectedUser?.uncomfortable_topics || ""}
               onChange={(e) =>
                 setSelectedUser({
                   ...selectedUser,
-                  uncomfortableTopics: e.target.value,
+                  uncomfortable_topics: e.target.value,
                 })
               }
               fullWidth
@@ -463,40 +520,39 @@ const Concierge = () => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>{selectedUser?.fullName}</DialogTitle>
+        <DialogTitle>{selectedUser?.full_name}</DialogTitle>
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
           <DialogContent dividers style={{ flex: 1, overflowY: "auto" }}>
             <Typography variant="body1">
-              <b>DOB:</b> {selectedUser?.DOB?.slice(0, 10)}
+              <b>DOB:</b> {selectedUser?.birth_date}
             </Typography>
             <Typography variant="body1">
-              <strong>Branch of Service:</strong>{" "}
-              {selectedUser?.branchOfService}
+              <strong>Branch of Service:</strong> {selectedUser?.service_branch}
             </Typography>
             <Typography variant="body1">
-              <strong>Contact Method:</strong> {selectedUser?.contactMethod}
+              <strong>Contact Method:</strong> {selectedUser?.contact_number}
             </Typography>
             <Typography variant="body1">
-              <strong>Source:</strong> {selectedUser?.howHeardAboutUs}
+              <strong>Source:</strong> {selectedUser?.how_heard_about_us}
             </Typography>
             <Typography variant="body1">
-              <strong>Reason:</strong> {selectedUser?.whyConcierge}
+              <strong>Reason:</strong> {selectedUser?.why_concierge}
             </Typography>
             <Typography variant="body1">
               <strong>No of Hours/Operators:</strong>{" "}
-              {selectedUser?.hoursPerMonth} / {selectedUser?.numberOfOperators}
+              {selectedUser?.hoursPerMonth} /{" "}
+              {selectedUser?.number_of_operators}
             </Typography>
             <Typography variant="body1">
-              <strong>Organization:</strong> {selectedUser?.transitionServices}
+              <strong>Organization:</strong> {selectedUser?.transition_services}
             </Typography>
             <Typography variant="body1">
-              <strong>Support Areas:</strong>{" "}
-              {selectedUser?.recommendedTransitionServices}
+              <strong>Support Areas:</strong> {selectedUser?.areas_of_support}
             </Typography>
             <Typography variant="body1">
-              <strong>Topics:</strong> {selectedUser?.uncomfortableTopics}
+              <strong>Topics:</strong> {selectedUser?.uncomfortable_topics}
             </Typography>
           </DialogContent>
           <DialogActions

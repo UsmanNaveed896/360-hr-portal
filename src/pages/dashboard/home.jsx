@@ -20,9 +20,9 @@ export function Home() {
   const operators = useGetOperatorHook();
   const peers = useGetPeerAmbassadorHook();
   const partnersCount = useServicePartnerHook();
-
+console.log(concierge.getConcierge)
   useEffect(() => {
-    if (role === "superAdmin") {
+    if (role === "SUPERADMIN") {
       users.handleGetUsers();
       concierge.handleGetConcierge();
       operators.handleGetOperator();
@@ -47,20 +47,18 @@ export function Home() {
   let countsArray = [];
   let titlesArray = [];
 
-  if (role === "superAdmin") {
+  if (role === "SUPERADMIN") {
     countsArray = [
-      users?.usersCount,
-      concierge?.conciergeCount,
-      operators?.operatorCount,
-      peers?.peerCount,
-      partnersCount.partnersCount,
+      "4",
+      concierge?.getConcierge?.length,
+      operators?.getOperators?.length,
+      peers?.getPeerAmbassador?.length,
+      partnersCount.getServicePartner?.length,
     ];
     titlesArray = [
-      "Total Users",
-      "Total Concierges",
+    
       "Total Operators",
-      "Total Peers",
-      "Total Partners",
+     
     ];
   } else if (role === "operator") {
     const employedCount = operators?.getOperators?.filter(
@@ -89,6 +87,8 @@ export function Home() {
           <StatisticsCard
             key={title}
             {...rest}
+            // value={"5"}
+            // title={title} 
             value={countsArray[index]}
             title={titlesArray[index]} // Use titlesArray based on the role
             icon={React.createElement(icon, {

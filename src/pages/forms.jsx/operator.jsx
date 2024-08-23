@@ -4,110 +4,101 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Button,
 } from "@material-tailwind/react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Puff } from "react-loader-spinner";
 import { useGetOperatorHook } from "@/hooks/useGetOperatorHook";
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Select,
   MenuItem,
-  CircularProgress,
   FormControl,
   InputLabel,
-  Select,
 } from "@mui/material";
-import { MdDelete, MdEdit, MdVisibility } from "react-icons/md";
-
+import { MdVisibility } from "react-icons/md";
+import { useGetConciergeHook } from "@/hooks/useGetConciergeHook";
+import { useGetPeerAmbassadorHook } from "@/hooks/useGetPeerAmbassadorHook";
+import { useServicePartnerHook } from "@/hooks/useServicePartners";
+import { IoIosCloseCircle } from "react-icons/io";
 const Operator = () => {
   const getOperatorksHook = useGetOperatorHook();
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openViewModal, setOpenViewModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const concierge = useGetConciergeHook();
+  const peers = useGetPeerAmbassadorHook();
+  const partners = useServicePartnerHook();
 
-  const options = {
-    AirForce: [
-      "Combat Controller/TACP",
-      "Pararescue (PJ)",
-      "24th Special Tactics Squadron (JSOC)",
-    ],
-    Army: [
-      "Ranger (75th Regiment)",
-      "Green Beret",
-      "SMU",
-      "Marine Force Recon",
-      "160th Special Operations Aviation Regiment (SOAR) Night Stalkers",
-    ],
-    Navy: ["EOD", "SEAL", "SWCC"],
-    Marines: ["Raider", "Marine Force Recon"],
+  const [openAssignModal, setOpenAssignModal] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [rowData, setRowData] = useState([]);
+
+  const handleOpenAssignModal = (role) => {
+    setSelectedRole(role);
+
+    // Fetching data based on selected role
+    if (role === "concierge") {
+      concierge.handleGetConcierge();
+    } else if (role === "peerAmbassador") {
+      peers.handleGetPeerAmbassador();
+    } else if (role === "servicePartner") {
+      partners.handleGetServicePartner();
+    }
+
+    setOpenAssignModal(true);
   };
 
-  const [selectedBranch, setSelectedBranch] = useState("AirForce");
-  const [branchOptions, setBranchOptions] = useState(options[selectedBranch]);
+  const handleCloseAssignModal = () => {
+    setSelectedRole("");
+    setOpenAssignModal(false);
+  };
 
-  const roles = ["Service partner", "Concierge", "Peer Ambassador"];
-
+  const handleAssignToChange = (row, value) => {
+    setRowData(row); 
+    handleOpenAssignModal(value);
+  };
+console.log(rowData,"row")
+  const handleAssign=(value)=>{
+    console.log(value,"val")
+    if (selectedRole == "concierge") {
+      let payLoad = {
+        ...rowData,
+        signed_from: "operators",
+        signed_to: "concierge",
+        form_id: rowData.id,
+        user_id: rowData.id,
+      };
+       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+    } else if (selectedRole == "peerAmbassador") {
+      let payLoad = {
+        ...rowData,
+        signed_from: "operators",
+        signed_to: "peer_ambassador",
+        form_id: rowData.id,
+        user_id: rowData.id,
+      };
+       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+    } else {
+      let payLoad = {
+        ...rowData,
+        signed_from: "operators",
+        signed_to: "service_partners",
+        form_id: rowData.id,
+        user_id: rowData.id,
+      };
+       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+    }
+  }
   useEffect(() => {
     getOperatorksHook.handleGetOperator();
   }, [getOperatorksHook.loginResponse]);
-
-  useEffect(() => {
-    if (selectedUser) {
-      setSelectedBranch(selectedUser.airForceAfSoc);
-      setBranchOptions(options[selectedUser.airForceAfSoc]);
-    }
-  }, [selectedUser]);
-
-  const handleBranchChange = (event) => {
-    const branch = event.target.value;
-    setSelectedBranch(branch);
-    setBranchOptions(options[branch]);
-    setSelectedUser({ ...selectedUser, airForceAfSoc: branch });
-  };
-
-  const handleSubDomainChange = (event) => {
-    const subDomain = event.target.value;
-    setSelectedUser({ ...selectedUser, EOD: subDomain });
-  };
-
-  const handleAssignToChange = (event) => {
-    const role = event.target.value;
-    setSelectedUser({ ...selectedUser, assignTo: role });
-  };
-
-  const handleOpenEditModal = (user) => {
-    setSelectedUser(user);
-    setOpenEditModal(true);
-  };
-
-  const handleOpenViewModal = (user) => {
-    setSelectedUser(user);
-    setOpenViewModal(true);
-  };
-
-  const handleCloseEditModal = () => {
-    setSelectedUser(null);
-    setOpenEditModal(false);
-  };
-
-  const handleCloseViewModal = () => {
-    setSelectedUser(null);
-    setOpenViewModal(false);
-  };
-
-  const handleSaveChanges = () => {
-    getOperatorksHook.handleEditOperatorForm(selectedUser);
-    handleCloseEditModal();
-  };
-
-  const handleDelete = (id) => {
-    getOperatorksHook.handleDelete(id);
-  };
-
   const columns = [
     {
       field: "fullName",
@@ -116,25 +107,25 @@ const Operator = () => {
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "DOB",
+      field: "birth_date",
       headerName: "DOB",
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "airForceAfSoc",
+      field: "force",
       headerName: "Department",
       width: 200,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "EOD",
+      field: "speciality",
       headerName: "Sub Domain",
       width: 200,
       headerClassName: "bg-[#000032] text-white",
     },
     {
-      field: "currentlyEmployed",
+      field: "currently_employed",
       headerClassName: "bg-[#000032] text-white",
       headerName: "Employed",
       width: 150,
@@ -145,7 +136,7 @@ const Operator = () => {
       ),
     },
     {
-      field: "location",
+      field: "address",
       headerName: "Location",
       width: 200,
       headerClassName: "bg-[#000032] text-white",
@@ -156,36 +147,40 @@ const Operator = () => {
       headerName: "Assign to",
       width: 200,
       renderCell: (params) => (
-        <div className="mt-3 text-white">
-         <FormControl sx={{ width: "150px" }}>
-      <InputLabel id="demo-simple-select-label" sx={{ color: 'white' }}>Assign To</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        variant="standard"
-        label="Assign To"
-        sx={{
-          color: 'white', // Changes the selected text color
-          '& .MuiSvgIcon-root': {
-            color: 'white', // Changes the dropdown arrow color
-          },
-        }}
-        MenuProps={{
-          PaperProps: {
-            sx: {
-              // Background color of the dropdown
-              '& .MuiMenuItem-root': {
-                color: 'black', // Text color of the dropdown options
-              },
-            },
-          },
-        }}
-      >
-        <MenuItem value={10}>Concierge</MenuItem>
-        <MenuItem value={20}>Peer Ambassador</MenuItem>
-        <MenuItem value={30}>Service Partner</MenuItem>
-      </Select>
-    </FormControl>
+        <div className="mt-3 text-white flex gap-3 items-center">
+          <FormControl sx={{ width: "150px" }}>
+            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+              Assign To
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              variant="standard"
+              label="Assign To"
+              onChange={(event) =>
+                handleAssignToChange(params.row, event.target.value)
+              }
+              sx={{
+                color: "white",
+                "& .MuiSvgIcon-root": {
+                  color: "white",
+                },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    "& .MuiMenuItem-root": {
+                      color: "black",
+                    },
+                  },
+                },
+              }}
+            >
+              <MenuItem value={"concierge"}>Concierge</MenuItem>
+              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+              <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       ),
     },
@@ -195,18 +190,10 @@ const Operator = () => {
       headerName: "Actions",
       width: 150,
       renderCell: (params) => (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-8">
           <MdVisibility
             className="cursor-pointer w-5 h-5"
             onClick={() => handleOpenViewModal(params.row)}
-          />
-          <MdEdit
-            className="cursor-pointer w-5 h-5"
-            onClick={() => handleOpenEditModal(params.row)}
-          />
-          <MdDelete
-            className="cursor-pointer w-5 h-5"
-            onClick={() => handleDelete(params.row._id)}
           />
         </div>
       ),
@@ -215,15 +202,69 @@ const Operator = () => {
 
   const rows = getOperatorksHook.getOperators?.map((operator, index) => ({
     ...operator,
-    id: operator._id,
-    fullName: `${operator.firstName} ${operator.lastName}`,
-    DOB: operator?.DOB?.slice(0, 10),
+    id: operator?.id,
+    fullName: `${operator.first_name} ${operator.last_name}`,
+    DOB: operator?.birth_date,
   }));
+
+  const renderModalContent = () => {
+    let dataToRender;
+
+    if (selectedRole === "concierge") {
+      dataToRender = concierge.getConcierge || [];
+    } else if (selectedRole === "peerAmbassador") {
+      dataToRender = peers.getPeerAmbassador || [];
+    } else if (selectedRole === "servicePartner") {
+      dataToRender = partners.getServicePartner || [];
+    } else {
+      dataToRender = [];
+    }
+    return (
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Email</TableCell>
+
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dataToRender.map((user, index) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.full_name || user.name || user.organization_name}</TableCell>
+                <TableCell>{user.phone_number || "N/A"}</TableCell>
+                <TableCell>{user.email || user.point_of_contact_email || "N/A"}</TableCell>
+
+                <TableCell>
+                  <Button
+                  sx={{backgroundColor:'#191a45'}}
+                    variant="contained"
+                  size="small"
+                    onClick={() => handleAssign(user)}
+                  >
+                    Assign
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
-      <Card  sx={{ backgroundColor: "#191a45" }}>
-        <CardHeader variant="gradient"  color="#000032" className="mb-8 p-6 bg-[#191a45]"  sx={{ backgroundColor: "#191a45" }}>
+      <Card sx={{ backgroundColor: "#191a45" }}>
+        <CardHeader
+          variant="gradient"
+          color="#000032"
+          className="mb-8 p-6 bg-[#191a45]"
+          sx={{ backgroundColor: "#191a45" }}
+        >
           <Typography variant="h6" color="white">
             Operators
           </Typography>
@@ -251,7 +292,7 @@ const Operator = () => {
               }}
             >
               <DataGrid
-                rows={rows}
+                rows={rows?.reverse()}
                 columns={columns}
                 pageSize={5}
                 rowHeight={80}
@@ -270,7 +311,7 @@ const Operator = () => {
                   "& .MuiTablePagination-root": {
                     color: "#fff", // Change text color in footer if needed
                   },
-               
+
                   "& .MuiDataGrid-columnHeaders": {
                     color: "#000",
                     backgroundColor: "#000032",
@@ -285,167 +326,18 @@ const Operator = () => {
         )}
       </Card>
 
-      {/* Edit Modal */}
-      <Dialog open={openEditModal} onClose={handleCloseEditModal}>
-        <DialogTitle>Edit Operator</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="First Name"
-            value={selectedUser?.firstName}
-            onChange={(e) =>
-              setSelectedUser({
-                ...selectedUser,
-                firstName: e.target.value,
-              })
-            }
-            fullWidth
-            margin="dense"
-          />
-          <TextField
-            label="Last Name"
-            value={selectedUser?.lastName}
-            onChange={(e) =>
-              setSelectedUser({
-                ...selectedUser,
-                lastName: e.target.value,
-              })
-            }
-            fullWidth
-            margin="dense"
-          />
-          <TextField
-            label="DOB"
-            value={selectedUser?.DOB.slice(0, 10)}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, DOB: e.target.value })
-            }
-            fullWidth
-            margin="dense"
-          />
-          <TextField
-            label="Department"
-            select
-            value={selectedBranch}
-            onChange={handleBranchChange}
-            fullWidth
-            margin="dense"
-          >
-            <MenuItem value="AirForce">Air Force AFSOC</MenuItem>
-            <MenuItem value="Army">Army USASOC</MenuItem>
-            <MenuItem value="Marines">Marines MARSOC</MenuItem>
-            <MenuItem value="Navy">Navy NSW NSO</MenuItem>
-          </TextField>
-          <TextField
-            label="Sub Domain"
-            select
-            value={selectedUser?.EOD}
-            onChange={handleSubDomainChange}
-            fullWidth
-            margin="dense"
-          >
-            {branchOptions?.map((option, index) => (
-              <MenuItem key={index} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Location"
-            value={selectedUser?.location}
-            onChange={(e) =>
-              setSelectedUser({ ...selectedUser, location: e.target.value })
-            }
-            fullWidth
-            margin="dense"
-          />
-          <TextField
-            label="Assign to"
-            select
-            value={selectedUser?.assignTo || ""}
-            onChange={handleAssignToChange}
-            fullWidth
-            margin="dense"
-          >
-            {roles.map((role, index) => (
-              <MenuItem key={index} value={role}>
-                {role}
-              </MenuItem>
-            ))}
-          </TextField>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleCloseEditModal}
-            variant="outlined"
-            color="secondary"
-          >
-            Cancel
-          </Button>
-          <Button onClick={handleSaveChanges} color="primary">
-            {getOperatorksHook.loading ? (
-              <CircularProgress size={24} />
-            ) : (
-              "Save Changes"
-            )}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* View Modal */}
-      <Dialog open={openViewModal} onClose={handleCloseViewModal}>
-        <DialogTitle>View Operator</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Full Name"
-            value={selectedUser?.firstName + " " + selectedUser?.lastName}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <TextField
-            label="DOB"
-            value={selectedUser?.DOB}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <TextField
-            label="Department"
-            value={selectedUser?.airForceAfSoc}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <TextField
-            label="Sub Domain"
-            value={selectedUser?.EOD}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <TextField
-            label="Location"
-            value={selectedUser?.location}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <TextField
-            label="Assign to"
-            value={selectedUser?.assignTo}
-            fullWidth
-            margin="dense"
-            readOnly
-          />
-          <Typography variant="body2" color="textSecondary">
-            Employed: {selectedUser?.currentlyEmployed ? "Yes" : "No"}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseViewModal} color="primary">
-            Close
-          </Button>
-        </DialogActions>
+      <Dialog
+        open={openAssignModal}
+        onClose={handleCloseAssignModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <div className="flex justify-between items-center px-5">
+        <DialogTitle>Assign Form</DialogTitle>
+        <IoIosCloseCircle className="w-5 h-5 cursor-pointer" onClick={handleCloseAssignModal}/>
+        </div>
+       
+        <DialogContent>{renderModalContent()}</DialogContent>
       </Dialog>
     </div>
   );
