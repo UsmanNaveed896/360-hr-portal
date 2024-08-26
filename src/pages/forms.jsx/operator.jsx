@@ -24,12 +24,14 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Chip,
 } from "@mui/material";
 import { MdVisibility } from "react-icons/md";
 import { useGetConciergeHook } from "@/hooks/useGetConciergeHook";
 import { useGetPeerAmbassadorHook } from "@/hooks/useGetPeerAmbassadorHook";
 import { useServicePartnerHook } from "@/hooks/useServicePartners";
 import { IoIosCloseCircle } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
 const Operator = () => {
   const getOperatorksHook = useGetOperatorHook();
   const concierge = useGetConciergeHook();
@@ -39,11 +41,28 @@ const Operator = () => {
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [rowData, setRowData] = useState([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleOpenEditModal = (row) => {
+    setOpenEditModal(true);
+    setSelectedRow(row);
+  };
+
+  const handleUpdateStatus = () => {
+    let payLoad = {
+      id: selectedRow.id,
+      status: "approved",
+    };
+    getOperatorksHook.handleUpdateStatus(payLoad, handleCloseEditModal);
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+  };
 
   const handleOpenAssignModal = (role) => {
     setSelectedRole(role);
 
-    // Fetching data based on selected role
     if (role === "concierge") {
       concierge.handleGetConcierge();
     } else if (role === "peerAmbassador") {
@@ -61,12 +80,12 @@ const Operator = () => {
   };
 
   const handleAssignToChange = (row, value) => {
-    setRowData(row); 
+    setRowData(row);
     handleOpenAssignModal(value);
   };
-console.log(rowData,"row")
-  const handleAssign=(value)=>{
-    console.log(value,"val")
+  console.log(rowData, "row");
+  const handleAssign = (value) => {
+    console.log(value, "val");
     if (selectedRole == "concierge") {
       let payLoad = {
         ...rowData,
@@ -75,7 +94,10 @@ console.log(rowData,"row")
         form_id: rowData.id,
         user_id: rowData.id,
       };
-       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+      getOperatorksHook.handleAssignOperatortoConcierge(
+        payLoad,
+        handleCloseAssignModal
+      );
     } else if (selectedRole == "peerAmbassador") {
       let payLoad = {
         ...rowData,
@@ -84,7 +106,10 @@ console.log(rowData,"row")
         form_id: rowData.id,
         user_id: rowData.id,
       };
-       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+      getOperatorksHook.handleAssignOperatortoConcierge(
+        payLoad,
+        handleCloseAssignModal
+      );
     } else {
       let payLoad = {
         ...rowData,
@@ -93,9 +118,12 @@ console.log(rowData,"row")
         form_id: rowData.id,
         user_id: rowData.id,
       };
-       getOperatorksHook.handleAssignOperatortoConcierge(payLoad,handleCloseAssignModal)
+      getOperatorksHook.handleAssignOperatortoConcierge(
+        payLoad,
+        handleCloseAssignModal
+      );
     }
-  }
+  };
   useEffect(() => {
     getOperatorksHook.handleGetOperator();
   }, [getOperatorksHook.loginResponse]);
@@ -140,6 +168,31 @@ console.log(rowData,"row")
       headerName: "Location",
       width: 200,
       headerClassName: "bg-[#000032] text-white",
+    },
+    {
+      field: "created_at",
+      headerName: "Status",
+      width: 150,
+      headerClassName: "bg-[#000032] text-white",
+      renderCell: (params) => (
+        <div>
+          <div className="flex gap-2 items-center mt-5">
+            <Chip
+              color={params?.value == "pending" ? "error" : "success"}
+              className="text-white"
+              label={params.value}
+            />
+            {params.value == "pending" ? (
+              <CiEdit
+                className="cursor-pointer"
+                onClick={() => handleOpenEditModal(params.row)}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      ),
     },
     {
       field: "assignTo",
@@ -219,6 +272,24 @@ console.log(rowData,"row")
     } else {
       dataToRender = [];
     }
+
+    const approvedData = dataToRender.filter(
+      (user) => user.status === "approved"
+    );
+
+    if (approvedData.length === 0) {
+      return (
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          style={{ marginTop: 20 }}
+        >
+          No approved forms found.
+        </Typography>
+      );
+    }
+
     return (
       <TableContainer component={Paper}>
         <Table>
@@ -227,22 +298,24 @@ console.log(rowData,"row")
               <TableCell>Name</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Email</TableCell>
-
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataToRender.map((user, index) => (
+            {approvedData.map((user, index) => (
               <TableRow key={user.id}>
-                <TableCell>{user.full_name || user.name || user.organization_name}</TableCell>
+                <TableCell>
+                  {user.full_name || user.name || user.organization_name}
+                </TableCell>
                 <TableCell>{user.phone_number || "N/A"}</TableCell>
-                <TableCell>{user.email || user.point_of_contact_email || "N/A"}</TableCell>
-
+                <TableCell>
+                  {user.email || user.point_of_contact_email || "N/A"}
+                </TableCell>
                 <TableCell>
                   <Button
-                  sx={{backgroundColor:'#191a45'}}
+                    sx={{ backgroundColor: "#191a45" }}
                     variant="contained"
-                  size="small"
+                    size="small"
                     onClick={() => handleAssign(user)}
                   >
                     Assign
@@ -333,12 +406,43 @@ console.log(rowData,"row")
         fullWidth
       >
         <div className="flex justify-between items-center px-5">
-        <DialogTitle>Assign Form</DialogTitle>
-        <IoIosCloseCircle className="w-5 h-5 cursor-pointer" onClick={handleCloseAssignModal}/>
+          <DialogTitle>Assign Form</DialogTitle>
+          <IoIosCloseCircle
+            className="w-5 h-5 cursor-pointer"
+            onClick={handleCloseAssignModal}
+          />
         </div>
-       
+
         <DialogContent>{renderModalContent()}</DialogContent>
       </Dialog>
+      {/* Update STAtus ModAL */}
+      {openEditModal && (
+        <Dialog
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>Approve Operator</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              Are you sure you want to approve this operator?
+            </Typography>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleUpdateStatus}
+              >
+                Approve
+              </Button>
+              <Button variant="outlined" onClick={handleCloseEditModal}>
+                Cancel
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

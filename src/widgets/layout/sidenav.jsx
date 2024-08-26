@@ -13,7 +13,7 @@ import { AuthContext } from "@/pages/auth/authecontext";
 import Img from '../../assets/logo21.png'
 
 export function Sidenav({ brandImg, brandName, routes,setOpen,open }) {
-  const { auth } = useContext(AuthContext);
+  const { auth ,role } = useContext(AuthContext);
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const sidenavTypes = {
@@ -39,7 +39,7 @@ export function Sidenav({ brandImg, brandName, routes,setOpen,open }) {
             className="uppercase"
             color={sidenavType === "white" ? "dark" : "blue-gray"}
           >
-          <span className="font-bold pr-1 ">Welcome Operation Jobs</span>  
+          <span className="font-bold pr-1 ">Welcome {role == "SUPERADMIN" ? "Operation Jobs" : "HR"} </span>  
           </Typography>
         </Link>
         <p className="text-sm text-center hover:underline cursor-pointer" onClick={()=>setOpen(!open)}>View Profile Details</p>

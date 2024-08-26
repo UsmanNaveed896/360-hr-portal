@@ -91,9 +91,37 @@ export const useGetConciergeHook = () => {
         toast.error(err?.response?.data?.message);
       });
   };
+  const handleUpdateStatus = (data ,handleCloseEditModal) => {
+    setLoginResponse(false);
+    setLoading(true);
+    let headers = {
+      Authorization: "Bearer " + token,
+    };
+    axios
+      .patch(`https://task-sk2q.onrender.com/concierge/update-status`, data, {
+        headers,
+      })
+      .then((res) => {
+        if (res?.status == 200) {
+          toast.success("Concierge Updated Successfully!");
+          setLoginResponse(true);
+          setLoading(false);
+          handleCloseEditModal()
+        } else {
+          toast.error(res?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+        toast.error(err?.response?.data?.message);
+      });
+  };
   return {
     handleGetConcierge,
     handleEditConciergeForm,
+    handleUpdateStatus,
     conciergeCount,
     getConcierge,
     loading,

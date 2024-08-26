@@ -44,11 +44,9 @@ export const useGetOperatorHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .put(
-        `https://task-sk2q.onrender.com/operators/update-operator`,
-        data,
-        { headers }
-      )
+      .put(`https://task-sk2q.onrender.com/operators/update-operator`, data, {
+        headers,
+      })
       .then((res) => {
         if (res?.status == 200) {
           toast.success("Form Updated Successfully!");
@@ -77,7 +75,7 @@ export const useGetOperatorHook = () => {
         { headers }
       )
       .then((res) => {
-        console.log(res,"delete")
+        console.log(res, "delete");
         if (res?.status == 200) {
           toast.success("Form Deleted Successfully!");
           setLoginResponse(true);
@@ -94,7 +92,7 @@ export const useGetOperatorHook = () => {
         toast.error(err?.response?.data?.error);
       });
   };
-  const handleAssignOperatortoConcierge = (data,handleCloseAssignModal ) => {
+  const handleAssignOperatortoConcierge = (data, handleCloseAssignModal) => {
     setLoginResponse(false);
     setLoading(true);
     let headers = {
@@ -108,7 +106,7 @@ export const useGetOperatorHook = () => {
           setLoginResponse(true);
           toast.success(res?.data?.data);
           setLoading(false);
-          handleCloseAssignModal()
+          handleCloseAssignModal();
         } else {
           toast.error(res?.message);
           setLoading(false);
@@ -120,6 +118,33 @@ export const useGetOperatorHook = () => {
         toast.error(err?.response?.data?.error);
       });
   };
+  const handleUpdateStatus = (data ,handleCloseEditModal) => {
+    setLoginResponse(false);
+    setLoading(true);
+    let headers = {
+      Authorization: "Bearer " + token,
+    };
+    axios
+      .patch(`https://task-sk2q.onrender.com/operators/update-status`, data, {
+        headers,
+      })
+      .then((res) => {
+        if (res?.status == 200) {
+          toast.success("Operator Updated Successfully!");
+          setLoginResponse(true);
+          setLoading(false);
+          handleCloseEditModal()
+        } else {
+          toast.error(res?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+        toast.error(err?.response?.data?.message);
+      });
+  };
   return {
     handleGetOperator,
     operatorCount,
@@ -129,5 +154,6 @@ export const useGetOperatorHook = () => {
     getOperators,
     handleDelete,
     handleAssignOperatortoConcierge,
+    handleUpdateStatus
   };
 };

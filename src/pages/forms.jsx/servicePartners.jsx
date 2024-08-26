@@ -9,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Chip,
 } from "@mui/material";
 import {
   Card,
@@ -25,6 +26,7 @@ import { MdDelete, MdEdit, MdVisibility } from "react-icons/md";
 import { useServicePartnerHook } from "@/hooks/useServicePartners";
 import { FaRegSave } from "react-icons/fa";
 import { useGetOperatorHook } from "@/hooks/useGetOperatorHook";
+import { CiEdit } from "react-icons/ci";
 
 const ServicePartners = () => {
   const getOperatorksHook = useGetOperatorHook();
@@ -34,6 +36,23 @@ const ServicePartners = () => {
   const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [rowData, setRowData] = useState();
+  const [openStatusModal, setOpenStatusModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleOpenStatusModal = (row) => {
+    setOpenStatusModal(true);
+    setSelectedRow(row);
+  };
+  const handleCloseStatusModal = () => {
+    setOpenStatusModal(false);
+
+  };
+  const handleUpdateStatus = () => {
+    let payLoad = {
+      id: selectedRow.id,
+      status: "approved",
+    };
+    getService.handleUpdateStatus(payLoad, handleCloseStatusModal);
+  };
   useEffect(() => {
     getService.handleGetServicePartner();
     if (getService.loginResponse) {
@@ -169,73 +188,98 @@ const ServicePartners = () => {
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
+    // {
+    //   field: "assignTo",
+    //   headerName: "Assign to",
+    //   headerClassName: "bg-[#000032] text-white",
+    //   width: 200,
+    //   renderCell: (params) => (
+    //     <div className=" text-white flex gap-3 items-center">
+    //       <FormControl sx={{ width: "150px" }}>
+    //         <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+    //           Assign To
+    //         </InputLabel>
+    //         <Select
+    //           labelId="demo-simple-select-label"
+    //           id="demo-simple-select"
+    //           variant="standard"
+    //           label="Age"
+    //           onChange={(event) =>
+    //             handleAssigntoConcierge(params.row, event.target.value)
+    //           }
+    //           sx={{
+    //             color: "white", 
+    //             "& .MuiSvgIcon-root": {
+    //               color: "white", 
+    //             },
+    //           }}
+    //         >
+    //           <MenuItem value={"concierge"}>Concierge</MenuItem>
+    //           <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+    //           <MenuItem value={"operator"}>Operator</MenuItem>
+    //         </Select>
+    //       </FormControl>
+    //       {rowData ? (
+    //         <FaRegSave
+    //           className="w-4 h-4 mt-4 cursor-pointer"
+    //           onClick={handleSave}
+    //         />
+    //       ) : (
+    //         ""
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
-      field: "assignTo",
-      headerName: "Assign to",
-      headerClassName: "bg-[#000032] text-white",
-      width: 200,
-      renderCell: (params) => (
-        <div className=" text-white flex gap-3 items-center">
-          <FormControl sx={{ width: "150px" }}>
-            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-              Assign To
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              variant="standard"
-              label="Age"
-              onChange={(event) =>
-                handleAssigntoConcierge(params.row, event.target.value)
-              }
-              sx={{
-                color: "white", // Changes the selected text color
-                "& .MuiSvgIcon-root": {
-                  color: "white", // Changes the dropdown arrow color
-                },
-              }}
-            >
-              <MenuItem value={"concierge"}>Concierge</MenuItem>
-              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
-              <MenuItem value={"operator"}>Operator</MenuItem>
-            </Select>
-          </FormControl>
-          {rowData ? (
-            <FaRegSave
-              className="w-4 h-4 mt-4 cursor-pointer"
-              onClick={handleSave}
-            />
-          ) : (
-            ""
-          )}
-        </div>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      headerClassName: "bg-[#000032] text-white",
+      field: "status",
+      headerName: "Status",
       width: 150,
+      headerClassName: "bg-[#000032] text-white",
       renderCell: (params) => (
-        <div className="mt-4" style={{ display: "flex", gap: "6px" }}>
-          <MdVisibility
-            className="w-5 h-5"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleOpenViewModal(params.row)}
-          />
-          <MdEdit
-            className="w-5 h-5"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleOpenEditModal(params.row)}
-          />
-          <MdDelete
-            className="w-5 h-5"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleDelete(params.row._id)}
-          />
+        <div>
+          <div className="flex gap-2 items-center mt-3">
+            <Chip
+              color={params?.value == "pending" ? "error" : "success"}
+              className="text-white"
+              label={params.value ? params.value : "No Status"}
+            />
+            {params.value == "pending" ? (
+              <CiEdit
+                className="cursor-pointer"
+                onClick={() => handleOpenStatusModal(params.row)}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       ),
     },
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   headerClassName: "bg-[#000032] text-white",
+    //   width: 150,
+    //   renderCell: (params) => (
+    //     <div className="mt-4" style={{ display: "flex", gap: "6px" }}>
+    //       <MdVisibility
+    //         className="w-5 h-5"
+    //         style={{ cursor: "pointer" }}
+    //         onClick={() => handleOpenViewModal(params.row)}
+    //       />
+    //       <MdEdit
+    //         className="w-5 h-5"
+    //         style={{ cursor: "pointer" }}
+    //         onClick={() => handleOpenEditModal(params.row)}
+    //       />
+    //       <MdDelete
+    //         className="w-5 h-5"
+    //         style={{ cursor: "pointer" }}
+    //         onClick={() => handleDelete(params.row._id)}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
 
   const rows =
@@ -537,6 +581,34 @@ const ServicePartners = () => {
           </Button>
         </DialogActions>
       </Dialog>
+         {/* Update STAtus ModAL */}
+         {openStatusModal && (
+        <Dialog
+          open={openStatusModal}
+          onClose={handleCloseStatusModal}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>Approve Service Partner</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              Are you sure you want to approve this Service Partner?
+            </Typography>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleUpdateStatus}
+              >
+                Approve
+              </Button>
+              <Button variant="outlined" onClick={handleCloseStatusModal}>
+                Cancel
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

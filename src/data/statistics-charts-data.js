@@ -125,7 +125,7 @@ export const statisticsChartsData = [
     // description: "Last Campaign Performance",
     // footer: "just updated",
     chart: completedTasksChart,
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "white",
@@ -133,7 +133,7 @@ export const statisticsChartsData = [
     // description: "Last Campaign Performance",
     // footer: "campaign sent 2 days ago",
     chart: websiteViewsChart,
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "white",
@@ -141,7 +141,7 @@ export const statisticsChartsData = [
     // description: "15% increase in today sales",
     // footer: "updated 4 min ago",
     chart: dailySalesChart,
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "white",

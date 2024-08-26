@@ -23,7 +23,7 @@ export const statisticsCardsData = [
       color: "text-green-500",
       label: "Concierge",
     },
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "gray",
@@ -45,7 +45,7 @@ export const statisticsCardsData = [
       color: "text-blue-500",
       label: "Peer Ambassadors",
     },
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "gray",
@@ -56,7 +56,7 @@ export const statisticsCardsData = [
       color: "text-blue-500",
       label: "Service Partners",
     },
-    roles: ["SUPERADMINn"], 
+    roles: ["HR"], 
   },
   {
     color: "gray",

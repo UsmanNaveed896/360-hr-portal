@@ -10,6 +10,7 @@ import {
 import { MdDelete, MdEdit, MdVisibility } from "react-icons/md";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import {
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,6 +26,7 @@ import { useGetConciergeHook } from "@/hooks/useGetConciergeHook";
 import { serviceData } from "@/data/dummyData";
 import { FaRegSave } from "react-icons/fa";
 import { useGetOperatorHook } from "@/hooks/useGetOperatorHook";
+import { CiEdit } from "react-icons/ci";
 
 const Concierge = () => {
   const getOperatorksHook = useGetOperatorHook();
@@ -33,6 +35,23 @@ const Concierge = () => {
   const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [rowData, setRowData] = useState();
+  const [openStatusModal, setOpenStatusModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleOpenStatusModal = (row) => {
+    setOpenStatusModal(true);
+    setSelectedRow(row);
+  };
+  const handleCloseStatusModal = () => {
+    setOpenStatusModal(false);
+
+  };
+  const handleUpdateStatus = () => {
+    let payLoad = {
+      id: selectedRow.id,
+      status: "approved",
+    };
+    concierge.handleUpdateStatus(payLoad, handleCloseStatusModal);
+  };
   useEffect(() => {
     concierge.handleGetConcierge();
     if (concierge.loginResponse) {
@@ -199,57 +218,82 @@ const Concierge = () => {
       width: 150,
     },
     {
-      field: "assignTo",
+      field: "status",
+      headerName: "Status",
+      width: 150,
       headerClassName: "bg-[#000032] text-white",
-      headerName: "Assign to",
-      width: 200,
       renderCell: (params) => (
-        <div className="mt-3 text-white flex gap-3 items-center">
-          <FormControl sx={{ width: "150px" }}>
-            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-              Assign To
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              variant="standard"
-              label="Age"
-              onChange={(event) =>
-                handleAssigntoConcierge(params.row, event.target.value)
-              }
-              sx={{
-                color: "white", // Changes the selected text color
-                "& .MuiSvgIcon-root": {
-                  color: "white", // Changes the dropdown arrow color
-                },
-              }}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    // Background color of the dropdown
-                    "& .MuiMenuItem-root": {
-                      color: "black", // Text color of the dropdown options
-                    },
-                  },
-                },
-              }}
-            >
-              <MenuItem value={"operator"}>Operator</MenuItem>
-              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
-              <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
-            </Select>
-          </FormControl>
-          {rowData ? (
-            <FaRegSave
-              className="w-4 h-4 mt-4 cursor-pointer"
-              onClick={handleSave}
+        <div>
+          <div className="flex gap-2 items-center mt-5">
+            <Chip
+              color={params?.value == "pending" ? "error" : "success"}
+              className="text-white"
+              label={params.value}
             />
-          ) : (
-            ""
-          )}
+            {params.value == "pending" ? (
+              <CiEdit
+                className="cursor-pointer"
+                onClick={() => handleOpenStatusModal(params.row)}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       ),
     },
+    // {
+    //   field: "assignTo",
+    //   headerClassName: "bg-[#000032] text-white",
+    //   headerName: "Assign to",
+    //   width: 200,
+    //   renderCell: (params) => (
+    //     <div className="mt-3 text-white flex gap-3 items-center">
+    //       <FormControl sx={{ width: "150px" }}>
+    //         <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+    //           Assign To
+    //         </InputLabel>
+    //         <Select
+    //           labelId="demo-simple-select-label"
+    //           id="demo-simple-select"
+    //           variant="standard"
+    //           label="Age"
+    //           onChange={(event) =>
+    //             handleAssigntoConcierge(params.row, event.target.value)
+    //           }
+    //           sx={{
+    //             color: "white", // Changes the selected text color
+    //             "& .MuiSvgIcon-root": {
+    //               color: "white", // Changes the dropdown arrow color
+    //             },
+    //           }}
+    //           MenuProps={{
+    //             PaperProps: {
+    //               sx: {
+    //                 // Background color of the dropdown
+    //                 "& .MuiMenuItem-root": {
+    //                   color: "black", // Text color of the dropdown options
+    //                 },
+    //               },
+    //             },
+    //           }}
+    //         >
+    //           <MenuItem value={"operator"}>Operator</MenuItem>
+    //           <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+    //           <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
+    //         </Select>
+    //       </FormControl>
+    //       {rowData ? (
+    //         <FaRegSave
+    //           className="w-4 h-4 mt-4 cursor-pointer"
+    //           onClick={handleSave}
+    //         />
+    //       ) : (
+    //         ""
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       field: "actions",
       headerClassName: "bg-[#000032] text-white",
@@ -564,6 +608,36 @@ const Concierge = () => {
           </DialogActions>
         </div>
       </Dialog>
+
+ 
+       {/* Update STAtus ModAL */}
+       {openStatusModal && (
+        <Dialog
+          open={openStatusModal}
+          onClose={handleCloseStatusModal}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>Approve Concierge</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              Are you sure you want to approve this Concierge?
+            </Typography>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleUpdateStatus}
+              >
+                Approve
+              </Button>
+              <Button variant="outlined" onClick={handleCloseStatusModal}>
+                Cancel
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

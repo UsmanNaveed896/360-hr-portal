@@ -93,7 +93,35 @@ export const useServicePartnerHook = () => {
         toast.error(err?.response?.data?.message);
       });
   };
+  const handleUpdateStatus = (data ,handleCloseEditModal) => {
+    setLoginResponse(false);
+    setLoading(true);
+    let headers = {
+      Authorization: "Bearer " + token,
+    };
+    axios
+      .patch(`https://task-sk2q.onrender.com/service-partners/update-status`, data, {
+        headers,
+      })
+      .then((res) => {
+        if (res?.status == 200) {
+          toast.success("Service Partner Updated Successfully!");
+          setLoginResponse(true);
+          setLoading(false);
+          handleCloseEditModal()
+        } else {
+          toast.error(res?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+        toast.error(err?.response?.data?.message);
+      });
+  };
   return {
+    handleUpdateStatus,
     handleGetServicePartner,
     handleEditServicePartnerForm,
     getServicePartner,

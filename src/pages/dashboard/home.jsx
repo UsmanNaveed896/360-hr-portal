@@ -20,7 +20,7 @@ export function Home() {
   const operators = useGetOperatorHook();
   const peers = useGetPeerAmbassadorHook();
   const partnersCount = useServicePartnerHook();
-console.log(concierge.getConcierge)
+  console.log(concierge.getConcierge);
   useEffect(() => {
     if (role === "SUPERADMIN") {
       users.handleGetUsers();
@@ -28,11 +28,9 @@ console.log(concierge.getConcierge)
       operators.handleGetOperator();
       peers.handleGetPeerAmbassador();
       partnersCount.handleGetServicePartner();
-    } else if (role === "operator") {
-      operators.handleGetOperator();
-    } else if (role === "peerAmbassador") {
+    } else if (role === "HR") {
+      partnersCount.handleGetServicePartner();
       peers.handleGetPeerAmbassador();
-    } else if (role === "concierge") {
       concierge.handleGetConcierge();
     }
   }, [role]);
@@ -49,35 +47,29 @@ console.log(concierge.getConcierge)
 
   if (role === "SUPERADMIN") {
     countsArray = [
-      "4",
+      "4", // Placeholder, adjust if necessary
       concierge?.getConcierge?.length,
       operators?.getOperators?.length,
       peers?.getPeerAmbassador?.length,
       partnersCount.getServicePartner?.length,
     ];
     titlesArray = [
-    
       "Total Operators",
-     
+      "Total Concierge",
+      "Total Peer Ambassadors",
+      "Total Service Partners",
     ];
-  } else if (role === "operator") {
-    const employedCount = operators?.getOperators?.filter(
-      (item) => item.currentlyEmployed === true
-    ).length;
-    countsArray = [operators?.operatorCount, employedCount];
-    titlesArray = ["Total Operators", "Employed"];
-  } else if (role === "peerAmbassador") {
-    const peerOperatorCount = peers?.getPeerAmbassador?.map(
-      (item) => item.numberOfOperators
-    );
-    countsArray = [peers?.peerCount, peerOperatorCount];
-    titlesArray = ["Total Peer Ambassadors", "No of Operators"];
-  } else if (role === "concierge") {
-    const peerOperatorCount = concierge?.getConcierge?.map(
-      (item) => item.numberOfOperators
-    );
-    countsArray = [concierge?.conciergeCount, peerOperatorCount];
-    titlesArray = ["Total Concierge", "No of Operators"];
+  } else if (role === "HR") {
+    countsArray = [
+      concierge?.getConcierge?.length,
+      peers?.getPeerAmbassador?.length,
+      partnersCount.getServicePartner?.length,
+    ];
+    titlesArray = [
+      "Total Concierge",
+      "Total Peer Ambassadors",
+      "Total Service Partners",
+    ];
   }
   console.log(peers?.getPeerAmbassador, "ssss");
   return (
@@ -88,7 +80,7 @@ console.log(concierge.getConcierge)
             key={title}
             {...rest}
             // value={"5"}
-            // title={title} 
+            // title={title}
             value={countsArray[index]}
             title={titlesArray[index]} // Use titlesArray based on the role
             icon={React.createElement(icon, {
@@ -113,10 +105,7 @@ console.log(concierge.getConcierge)
                 variant="small"
                 className="flex items-center font-normal text-white"
               >
-                <ClockIcon
-                  strokeWidth={2}
-                  className="h-4 w-4 text-white"
-                />
+                <ClockIcon strokeWidth={2} className="h-4 w-4 text-white" />
                 &nbsp;{props.footer}
               </Typography>
             }
