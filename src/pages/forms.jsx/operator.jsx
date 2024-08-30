@@ -43,6 +43,7 @@ const Operator = () => {
   const [rowData, setRowData] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+
   const handleOpenEditModal = (row) => {
     setOpenEditModal(true);
     setSelectedRow(row);
@@ -83,9 +84,8 @@ const Operator = () => {
     setRowData(row);
     handleOpenAssignModal(value);
   };
-  console.log(rowData, "row");
+
   const handleAssign = (value) => {
-    console.log(value, "val");
     if (selectedRole == "concierge") {
       let payLoad = {
         ...rowData,
@@ -201,15 +201,17 @@ const Operator = () => {
       width: 200,
       renderCell: (params) => (
         <div className="mt-3 text-white flex gap-3 items-center">
+          {console.log(params, "params")}
           <FormControl sx={{ width: "150px" }}>
-            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-              Assign To
+            <InputLabel id="demo-simple-select-label" sx={{ color: params.row.created_at == "pending" ? "gray" : "white" }}>
+            {params.row.created_at == "pending" ? "Pending" : "Assign To"}
             </InputLabel>
             <Select
+              disabled={params.row.created_at == "pending"}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               variant="standard"
-              label="Assign To"
+              label={params.row.created_at == "pending" ? "Pending" : "Assign To"}
               onChange={(event) =>
                 handleAssignToChange(params.row, event.target.value)
               }
@@ -443,6 +445,62 @@ const Operator = () => {
           </DialogContent>
         </Dialog>
       )}
+      {/* View Modal */}
+      {/* <Dialog open={openViewModal} onClose={handleCloseViewModal}>
+        <DialogTitle>View Operator</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Full Name"
+            value={selectedUser?.fullName}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <TextField
+            label="DOB"
+            value={selectedUser?.DOB}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <TextField
+            label="Department"
+            value={selectedUser?.force}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <TextField
+            label="Sub Domain"
+            value={selectedUser?.speciality}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <TextField
+            label="Location"
+            value={selectedUser?.address}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <TextField
+            label="Assign to"
+            value={selectedUser?.assignTo}
+            fullWidth
+            margin="dense"
+            readOnly
+          />
+          <Typography variant="body2" color="textSecondary">
+            Employed: {selectedUser?.currentlyEmployed ? "Yes" : "No"}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseViewModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog> */}
     </div>
   );
 };

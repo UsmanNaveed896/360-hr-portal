@@ -47,8 +47,7 @@ export const useRegisterHook = () => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log("err", err?.response?.data?.message);
-        toast.error(err?.response?.data?.message);
+        toast.error(err?.response?.data?.data);
       });
   };
 
