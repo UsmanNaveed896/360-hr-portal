@@ -42,7 +42,6 @@ const PeerAmbassador = () => {
   };
   const handleCloseStatusModal = () => {
     setOpenStatusModal(false);
-
   };
   const handleUpdateStatus = () => {
     let payLoad = {
@@ -217,74 +216,76 @@ const PeerAmbassador = () => {
         </div>
       ),
     },
-    // {
-    //   field: "assignTo",
-    //   headerClassName: "bg-[#000032] text-white",
-    //   headerName: "Assign to",
-    //   width: 200,
-    //   renderCell: (params) => (
-    //     <div className="mt-3 text-white flex gap-3 items-center">
-    //       <FormControl sx={{ width: "150px" }}>
-    //         <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-    //           Assign To
-    //         </InputLabel>
-    //         <Select
-    //           labelId="demo-simple-select-label"
-    //           id="demo-simple-select"
-    //           variant="standard"
-    //           label="Age"
-    //           onChange={(event) =>
-    //             handleAssigntoConcierge(params.row, event.target.value)
-    //           }
-    //           sx={{
-    //             color: "white", // Changes the selected text color
-    //             "& .MuiSvgIcon-root": {
-    //               color: "white", // Changes the dropdown arrow color
-    //             },
-    //           }}
-    //         >
-    //          <MenuItem value={"operator"}>Operator</MenuItem>
-    //           <MenuItem value={"concierge"}>Concierge</MenuItem>
-    //           <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
-    //         </Select>
-    //       </FormControl>
-    //       {rowData ? (
-    //         <FaRegSave
-    //           className="w-4 h-4 mt-4 cursor-pointer"
-    //           onClick={handleSave}
-    //         />
-    //       ) : (
-    //         ""
-    //       )}
-    //     </div>
-    //   ),
-    // },
     {
-      field: "actions",
+      field: "assignTo",
       headerClassName: "bg-[#000032] text-white",
-      headerName: "Actions",
+      headerName: "Assign to",
       width: 200,
-
       renderCell: (params) => (
-        <div style={{ display: "flex", gap: "6px" }} className="mt-6">
-          <MdVisibility
-            className="w-5 h-5 cursor-pointer"
-            onClick={() => handleOpenViewModal(params.row)}
-          />
-          <MdEdit
-            className="w-5 h-5 cursor-pointer"
-            onClick={() => handleOpenEditModal(params.row)}
-          />
-          <MdDelete
-            className="w-5 h-5 cursor-pointer"
-            onClick={() => handleDelete(params.row._id)}
-          />
+        <div className="mt-3 text-white flex gap-3 items-center">
+          <FormControl sx={{ width: "150px" }}>
+            <InputLabel
+              id="demo-simple-select-label"
+              sx={{ color: params.row.status == "pending" ? "gray" : "white" }}
+            >
+              {params.row.status == "pending" ? "Pending" : "Assign To"}
+            </InputLabel>
+            <Select
+              disabled={params.row.status == "pending"}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              variant="standard"
+              label="Age"
+              onChange={(event) =>
+                handleAssigntoConcierge(params.row, event.target.value)
+              }
+              sx={{
+                color: "white", // Changes the selected text color
+                "& .MuiSvgIcon-root": {
+                  color: "white", // Changes the dropdown arrow color
+                },
+              }}
+            >
+              <MenuItem value={"operator"}>Operator</MenuItem>
+              <MenuItem value={"concierge"}>Concierge</MenuItem>
+              <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
+            </Select>
+          </FormControl>
+          {rowData ? (
+            <FaRegSave
+              className="w-4 h-4 mt-4 cursor-pointer"
+              onClick={handleSave}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ),
     },
+    // {
+    //   field: "actions",
+    //   headerClassName: "bg-[#000032] text-white",
+    //   headerName: "Actions",
+    //   width: 200,
+
+    //   renderCell: (params) => (
+    //     <div style={{ display: "flex", gap: "6px" }} className="mt-6">
+    //       <MdVisibility
+    //         className="w-5 h-5 cursor-pointer"
+    //         onClick={() => handleOpenViewModal(params.row)}
+    //       />
+    //       <MdEdit
+    //         className="w-5 h-5 cursor-pointer"
+    //         onClick={() => handleOpenEditModal(params.row)}
+    //       />
+    //       <MdDelete
+    //         className="w-5 h-5 cursor-pointer"
+    //         onClick={() => handleDelete(params.row._id)}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
-
-
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -580,8 +581,8 @@ const PeerAmbassador = () => {
           </Button>
         </DialogActions>
       </Dialog>
-        {/* Update STAtus ModAL */}
-        {openStatusModal && (
+      {/* Update STAtus ModAL */}
+      {openStatusModal && (
         <Dialog
           open={openStatusModal}
           onClose={handleCloseStatusModal}

@@ -188,48 +188,6 @@ const ServicePartners = () => {
       width: 150,
       headerClassName: "bg-[#000032] text-white",
     },
-    // {
-    //   field: "assignTo",
-    //   headerName: "Assign to",
-    //   headerClassName: "bg-[#000032] text-white",
-    //   width: 200,
-    //   renderCell: (params) => (
-    //     <div className=" text-white flex gap-3 items-center">
-    //       <FormControl sx={{ width: "150px" }}>
-    //         <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-    //           Assign To
-    //         </InputLabel>
-    //         <Select
-    //           labelId="demo-simple-select-label"
-    //           id="demo-simple-select"
-    //           variant="standard"
-    //           label="Age"
-    //           onChange={(event) =>
-    //             handleAssigntoConcierge(params.row, event.target.value)
-    //           }
-    //           sx={{
-    //             color: "white", 
-    //             "& .MuiSvgIcon-root": {
-    //               color: "white", 
-    //             },
-    //           }}
-    //         >
-    //           <MenuItem value={"concierge"}>Concierge</MenuItem>
-    //           <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
-    //           <MenuItem value={"operator"}>Operator</MenuItem>
-    //         </Select>
-    //       </FormControl>
-    //       {rowData ? (
-    //         <FaRegSave
-    //           className="w-4 h-4 mt-4 cursor-pointer"
-    //           onClick={handleSave}
-    //         />
-    //       ) : (
-    //         ""
-    //       )}
-    //     </div>
-    //   ),
-    // },
     {
       field: "status",
       headerName: "Status",
@@ -255,6 +213,50 @@ const ServicePartners = () => {
         </div>
       ),
     },
+    {
+      field: "assignTo",
+      headerName: "Assign to",
+      headerClassName: "bg-[#000032] text-white",
+      width: 200,
+      renderCell: (params) => (
+        <div className=" text-white flex gap-3 items-center">
+          <FormControl sx={{ width: "150px" }}>
+            <InputLabel id="demo-simple-select-label" sx={{ color: params.row.status == "pending" ? "gray" : "white" }}>
+            {params.row.status == "pending" ? "Pending" : "Assign To"}
+            </InputLabel>
+            <Select
+              disabled={params.row.status == "pending"}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              variant="standard"
+              label="Age"
+              onChange={(event) =>
+                handleAssigntoConcierge(params.row, event.target.value)
+              }
+              sx={{
+                color: "white", 
+                "& .MuiSvgIcon-root": {
+                  color: "white", 
+                },
+              }}
+            >
+              <MenuItem value={"concierge"}>Concierge</MenuItem>
+              <MenuItem value={"peerAmbassador"}>Peer Ambassador</MenuItem>
+              <MenuItem value={"operator"}>Operator</MenuItem>
+            </Select>
+          </FormControl>
+          {rowData ? (
+            <FaRegSave
+              className="w-4 h-4 mt-4 cursor-pointer"
+              onClick={handleSave}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+    },
+   
     // {
     //   field: "actions",
     //   headerName: "Actions",
