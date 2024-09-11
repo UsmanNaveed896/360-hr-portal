@@ -32,6 +32,9 @@ export function Home() {
       partnersCount.handleGetServicePartner();
       peers.handleGetPeerAmbassador();
       concierge.handleGetConcierge();
+    }else {
+      operators.handleGetOperator();
+
     }
   }, [role]);
 
@@ -70,8 +73,15 @@ export function Home() {
       "Total Peer Ambassadors",
       "Total Service Partners",
     ];
+  }else if (role === "OPERATIONS") {
+    countsArray = [
+      operators?.getOperators?.length,
+    ];
+    titlesArray = [
+      "Total Operatos",
+    ];
   }
-  console.log(peers?.getPeerAmbassador, "ssss");
+ 
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">

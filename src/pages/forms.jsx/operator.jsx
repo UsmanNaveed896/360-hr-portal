@@ -25,6 +25,8 @@ import {
   FormControl,
   InputLabel,
   Chip,
+  TextField,
+  DialogActions,
 } from "@mui/material";
 import { MdVisibility } from "react-icons/md";
 import { useGetConciergeHook } from "@/hooks/useGetConciergeHook";
@@ -43,7 +45,18 @@ const Operator = () => {
   const [rowData, setRowData] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
+
+  const handleOpenViewModal = (user) => {
+    setSelectedUser(user);
+    setOpenViewModal(true);
+  };
+  const handleCloseViewModal = () => {
+    setSelectedUser(null);
+    setOpenViewModal(false);
+  };
   const handleOpenEditModal = (row) => {
     setOpenEditModal(true);
     setSelectedRow(row);
@@ -446,7 +459,7 @@ const Operator = () => {
         </Dialog>
       )}
       {/* View Modal */}
-      {/* <Dialog open={openViewModal} onClose={handleCloseViewModal}>
+      <Dialog open={openViewModal} onClose={handleCloseViewModal}>
         <DialogTitle>View Operator</DialogTitle>
         <DialogContent>
           <TextField
@@ -491,7 +504,7 @@ const Operator = () => {
             margin="dense"
             readOnly
           />
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" style={{marginTop:'4px'}}>
             Employed: {selectedUser?.currentlyEmployed ? "Yes" : "No"}
           </Typography>
         </DialogContent>
@@ -500,7 +513,7 @@ const Operator = () => {
             Close
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 };

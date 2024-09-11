@@ -78,7 +78,7 @@ export const statisticsCardsData = [
       color: "text-red-500",
       label: "Operators",
     },
-    roles: ["operator"], 
+    roles: ["OPERATIONS"], 
   },
   {
     color: "gray",

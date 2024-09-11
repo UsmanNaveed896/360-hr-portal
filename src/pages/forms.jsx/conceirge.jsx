@@ -295,28 +295,28 @@ const Concierge = () => {
         </div>
       ),
     },
-    // {
-    //   field: "actions",
-    //   headerClassName: "bg-[#000032] text-white",
-    //   headerName: "Actions",
-    //   type: "actions",
-    //   renderCell: (params) => (
-    //     <div className="flex gap-2 mt-1">
-    //       <MdVisibility
-    //         className="cursor-pointer w-5 h-5"
-    //         onClick={() => handleOpenViewModal(params.row)}
-    //       />
-    //       <MdEdit
-    //         className="cursor-pointer w-5 h-5"
-    //         onClick={() => handleOpenEditModal(params.row)}
-    //       />
-    //       <MdDelete
-    //         className="cursor-pointer w-5 h-5"
-    //         onClick={() => handleDelete(params.row._id)}
-    //       />
-    //     </div>
-    //   ),
-    // },
+    {
+      field: "actions",
+      headerClassName: "bg-[#000032] text-white",
+      headerName: "Actions",
+      type: "actions",
+      renderCell: (params) => (
+        <div className="flex gap-2 mt-1">
+          <MdVisibility
+            className="cursor-pointer w-5 h-5"
+            onClick={() => handleOpenViewModal(params.row)}
+          />
+          {/* <MdEdit
+            className="cursor-pointer w-5 h-5"
+            onClick={() => handleOpenEditModal(params.row)}
+          />
+          <MdDelete
+            className="cursor-pointer w-5 h-5"
+            onClick={() => handleDelete(params.row._id)}
+          /> */}
+        </div>
+      ),
+    },
   ];
 
   return (

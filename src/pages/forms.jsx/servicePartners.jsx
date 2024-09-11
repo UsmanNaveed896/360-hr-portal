@@ -257,31 +257,31 @@ const ServicePartners = () => {
       ),
     },
    
-    // {
-    //   field: "actions",
-    //   headerName: "Actions",
-    //   headerClassName: "bg-[#000032] text-white",
-    //   width: 150,
-    //   renderCell: (params) => (
-    //     <div className="mt-4" style={{ display: "flex", gap: "6px" }}>
-    //       <MdVisibility
-    //         className="w-5 h-5"
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => handleOpenViewModal(params.row)}
-    //       />
-    //       <MdEdit
-    //         className="w-5 h-5"
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => handleOpenEditModal(params.row)}
-    //       />
-    //       <MdDelete
-    //         className="w-5 h-5"
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => handleDelete(params.row._id)}
-    //       />
-    //     </div>
-    //   ),
-    // },
+    {
+      field: "actions",
+      headerName: "Actions",
+      headerClassName: "bg-[#000032] text-white",
+      width: 150,
+      renderCell: (params) => (
+        <div className="mt-4" style={{ display: "flex", gap: "6px" }}>
+          <MdVisibility
+            className="w-5 h-5"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleOpenViewModal(params.row)}
+          />
+          {/* <MdEdit
+            className="w-5 h-5"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleOpenEditModal(params.row)}
+          />
+          <MdDelete
+            className="w-5 h-5"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleDelete(params.row._id)}
+          /> */}
+        </div>
+      ),
+    },
   ];
 
   const rows =

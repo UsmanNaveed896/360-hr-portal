@@ -55,7 +55,7 @@ const routes = () => {
           name: 'Operators',
           path: '/operator',
           element: <Operator />,
-          condition: role === 'SUPERADMIN' ,
+          condition: role === 'OPERATIONS' ,
         },
         {
           icon: <MdOutlineReduceCapacity {...icon} />,

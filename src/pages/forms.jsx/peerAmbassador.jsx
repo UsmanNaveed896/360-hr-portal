@@ -262,29 +262,29 @@ const PeerAmbassador = () => {
         </div>
       ),
     },
-    // {
-    //   field: "actions",
-    //   headerClassName: "bg-[#000032] text-white",
-    //   headerName: "Actions",
-    //   width: 200,
+    {
+      field: "actions",
+      headerClassName: "bg-[#000032] text-white",
+      headerName: "Actions",
+      width: 200,
 
-    //   renderCell: (params) => (
-    //     <div style={{ display: "flex", gap: "6px" }} className="mt-6">
-    //       <MdVisibility
-    //         className="w-5 h-5 cursor-pointer"
-    //         onClick={() => handleOpenViewModal(params.row)}
-    //       />
-    //       <MdEdit
-    //         className="w-5 h-5 cursor-pointer"
-    //         onClick={() => handleOpenEditModal(params.row)}
-    //       />
-    //       <MdDelete
-    //         className="w-5 h-5 cursor-pointer"
-    //         onClick={() => handleDelete(params.row._id)}
-    //       />
-    //     </div>
-    //   ),
-    // },
+      renderCell: (params) => (
+        <div style={{ display: "flex", gap: "6px" }} className="mt-6">
+          <MdVisibility
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => handleOpenViewModal(params.row)}
+          />
+          {/* <MdEdit
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => handleOpenEditModal(params.row)}
+          />
+          <MdDelete
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => handleDelete(params.row._id)}
+          /> */}
+        </div>
+      ),
+    },
   ];
 
   return (

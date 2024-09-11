@@ -149,7 +149,7 @@ export const statisticsChartsData = [
     // description: "15% increase in today sales",
     // footer: "updated 4 min ago",
     chart: dailySalesChart,
-    roles: ["operator"], 
+    roles: ["OPERATIONS"], 
   },
   {
     color: "white",

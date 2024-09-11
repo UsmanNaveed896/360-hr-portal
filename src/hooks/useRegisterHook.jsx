@@ -22,15 +22,16 @@ export const useRegisterHook = () => {
       .then((res) => {
         console.log(res, "response");
         if (res?.status == 200) {
-          toast.success("Logged In Successfully");
+          if(res?.data?.response?.data?.role !== "OPERATIONS" && res?.data?.response?.data?.role !== "HR"){
+            toast.error("You are not authorized !")
+            setLoading(false);
+          } else {
           const token = res?.data?.response?.data?.token;
           const userid = res?.data?.response?.data?.id;
           const name = res?.data?.response?.data?.name;
           const role = res?.data?.response?.data?.role;
           const email = res?.data?.response?.data?.email;
-
           localStorage.setItem("role", role);
-
           localStorage.setItem("name", name);
           localStorage.setItem("token", token);
           localStorage.setItem("user_id", userid);
@@ -39,7 +40,9 @@ export const useRegisterHook = () => {
           const response = res?.data?.data;
           setUserResponse(response);
           setLoading(false);
+          toast.success("Logged In Successfully");
           navigate("/dashboard/home");
+          }
         } else {
           toast.error(res?.message);
           setLoading(false);

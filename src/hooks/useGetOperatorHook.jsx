@@ -35,6 +35,8 @@ export const useGetOperatorHook = () => {
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
+        toast.error(err.response.data.message);
+
       });
   };
   const handleEditOperatorForm = (data) => {
