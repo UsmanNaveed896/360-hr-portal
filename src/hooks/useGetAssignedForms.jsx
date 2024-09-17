@@ -14,7 +14,7 @@ export const UseAssignedFormHook = () => {
       Authorization: "Bearer " + token,
     };
     axios
-      .get("https://task-sk2q.onrender.com/siged-form/get-form", {
+      .get("https://task-sk2q.onrender.com/siged-form/get-all-forms", {
         headers,
       })
       .then((res) => {

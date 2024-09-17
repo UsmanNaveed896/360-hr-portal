@@ -47,7 +47,7 @@ const Operator = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+ const [id,setId]=useState()
 
   const handleOpenViewModal = (user) => {
     setSelectedUser(user);
@@ -87,7 +87,7 @@ const Operator = () => {
 
     setOpenAssignModal(true);
   };
-
+console.log(rowData,"dddd")
   const handleCloseAssignModal = () => {
     setSelectedRole("");
     setOpenAssignModal(false);
@@ -98,14 +98,17 @@ const Operator = () => {
     handleOpenAssignModal(value);
   };
 
+  console.log(selectedRole,"ss")
   const handleAssign = (value) => {
+    setId(value)
     if (selectedRole == "concierge") {
       let payLoad = {
         ...rowData,
+        concierge_form_id:id.id,
         signed_from: "operators",
         signed_to: "concierge",
         form_id: rowData.id,
-        user_id: rowData.id,
+        user_id: parseInt(rowData.user_id),
       };
       getOperatorksHook.handleAssignOperatortoConcierge(
         payLoad,
@@ -114,10 +117,11 @@ const Operator = () => {
     } else if (selectedRole == "peerAmbassador") {
       let payLoad = {
         ...rowData,
+        peer_ambassador_form_id:id.id,
         signed_from: "operators",
         signed_to: "peer_ambassador",
         form_id: rowData.id,
-        user_id: rowData.id,
+        user_id:  parseInt(rowData.user_id),
       };
       getOperatorksHook.handleAssignOperatortoConcierge(
         payLoad,
@@ -126,17 +130,20 @@ const Operator = () => {
     } else {
       let payLoad = {
         ...rowData,
+        service_partner_form_id:id.id,
         signed_from: "operators",
         signed_to: "service_partners",
         form_id: rowData.id,
-        user_id: rowData.id,
+        user_id:  parseInt(rowData.user_id),
       };
+
       getOperatorksHook.handleAssignOperatortoConcierge(
         payLoad,
         handleCloseAssignModal
       );
     }
   };
+  console.log(id,"idssssss")
   useEffect(() => {
     getOperatorksHook.handleGetOperator();
   }, [getOperatorksHook.loginResponse]);
@@ -214,7 +221,7 @@ const Operator = () => {
       width: 200,
       renderCell: (params) => (
         <div className="mt-3 text-white flex gap-3 items-center">
-          {console.log(params, "params")}
+ 
           <FormControl sx={{ width: "150px" }}>
             <InputLabel id="demo-simple-select-label" sx={{ color: params.row.created_at == "pending" ? "gray" : "white" }}>
             {params.row.created_at == "pending" ? "Pending" : "Assign To"}
@@ -275,6 +282,7 @@ const Operator = () => {
     DOB: operator?.birth_date,
   }));
 
+  console.log(concierge.getConcierge,"getss")
   const renderModalContent = () => {
     let dataToRender;
 

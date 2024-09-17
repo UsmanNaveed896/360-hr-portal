@@ -9,13 +9,13 @@ import { FaUsers } from 'react-icons/fa';
 import { Home, Profile, Tables, Notifications } from '@/pages/dashboard';
 import Permissions from './pages/dashboard/permissions';
 import { SignUp } from '@/pages/auth';
-import Operator from './pages/forms.jsx/operator';
-import Conceirge from './pages/forms.jsx/conceirge';
+import Operator from './pages/forms/operator';
+import Conceirge from './pages/forms/conceirge';
 import { MdAssignment, MdOutlineReduceCapacity, MdSupervisedUserCircle } from 'react-icons/md';
-import PeerAmbassador from './pages/forms.jsx/peerAmbassador';
-import ServicePartners from './pages/forms.jsx/servicePartners';
+import PeerAmbassador from './pages/forms/peerAmbassador';
+import ServicePartners from './pages/forms/servicePartners';
 import { AuthContext } from './pages/auth/authecontext';
-import AssignedForms from './pages/dashboard/assignedForms';
+import AssignedForms from './pages/forms/assignedForms';
 
 const icon = {
   className: 'w-5 h-5 text-inherit',
@@ -55,6 +55,13 @@ const routes = () => {
           name: 'Operators',
           path: '/operator',
           element: <Operator />,
+          condition: role === 'OPERATIONS' ,
+        },
+        {
+          icon: <TableCellsIcon {...icon} />,
+          name: 'Assigned Forms',
+          path: '/assignedforms',
+          element: <AssignedForms />,
           condition: role === 'OPERATIONS' ,
         },
         {

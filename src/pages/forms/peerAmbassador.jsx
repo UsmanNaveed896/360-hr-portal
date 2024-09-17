@@ -216,52 +216,52 @@ const PeerAmbassador = () => {
         </div>
       ),
     },
-    {
-      field: "assignTo",
-      headerClassName: "bg-[#000032] text-white",
-      headerName: "Assign to",
-      width: 200,
-      renderCell: (params) => (
-        <div className="mt-3 text-white flex gap-3 items-center">
-          <FormControl sx={{ width: "150px" }}>
-            <InputLabel
-              id="demo-simple-select-label"
-              sx={{ color: params.row.status == "pending" ? "gray" : "white" }}
-            >
-              {params.row.status == "pending" ? "Pending" : "Assign To"}
-            </InputLabel>
-            <Select
-              disabled={params.row.status == "pending"}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              variant="standard"
-              label="Age"
-              onChange={(event) =>
-                handleAssigntoConcierge(params.row, event.target.value)
-              }
-              sx={{
-                color: "white", // Changes the selected text color
-                "& .MuiSvgIcon-root": {
-                  color: "white", // Changes the dropdown arrow color
-                },
-              }}
-            >
-              <MenuItem value={"operator"}>Operator</MenuItem>
-              <MenuItem value={"concierge"}>Concierge</MenuItem>
-              <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
-            </Select>
-          </FormControl>
-          {rowData ? (
-            <FaRegSave
-              className="w-4 h-4 mt-4 cursor-pointer"
-              onClick={handleSave}
-            />
-          ) : (
-            ""
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   field: "assignTo",
+    //   headerClassName: "bg-[#000032] text-white",
+    //   headerName: "Assign to",
+    //   width: 200,
+    //   renderCell: (params) => (
+    //     <div className="mt-3 text-white flex gap-3 items-center">
+    //       <FormControl sx={{ width: "150px" }}>
+    //         <InputLabel
+    //           id="demo-simple-select-label"
+    //           sx={{ color: params.row.status == "pending" ? "gray" : "white" }}
+    //         >
+    //           {params.row.status == "pending" ? "Pending" : "Assign To"}
+    //         </InputLabel>
+    //         <Select
+    //           disabled={params.row.status == "pending"}
+    //           labelId="demo-simple-select-label"
+    //           id="demo-simple-select"
+    //           variant="standard"
+    //           label="Age"
+    //           onChange={(event) =>
+    //             handleAssigntoConcierge(params.row, event.target.value)
+    //           }
+    //           sx={{
+    //             color: "white", // Changes the selected text color
+    //             "& .MuiSvgIcon-root": {
+    //               color: "white", // Changes the dropdown arrow color
+    //             },
+    //           }}
+    //         >
+    //           <MenuItem value={"operator"}>Operator</MenuItem>
+    //           <MenuItem value={"concierge"}>Concierge</MenuItem>
+    //           <MenuItem value={"servicePartner"}>Service Partner</MenuItem>
+    //         </Select>
+    //       </FormControl>
+    //       {rowData ? (
+    //         <FaRegSave
+    //           className="w-4 h-4 mt-4 cursor-pointer"
+    //           onClick={handleSave}
+    //         />
+    //       ) : (
+    //         ""
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       field: "actions",
       headerClassName: "bg-[#000032] text-white",

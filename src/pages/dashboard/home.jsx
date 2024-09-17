@@ -13,14 +13,14 @@ import { AuthContext } from "../auth/authecontext";
 
 export function Home() {
   const { auth, role } = useContext(AuthContext);
-  console.log(role, "role");
+
 
   const users = useGetUsersHook();
   const concierge = useGetConciergeHook();
   const operators = useGetOperatorHook();
   const peers = useGetPeerAmbassadorHook();
   const partnersCount = useServicePartnerHook();
-  console.log(concierge.getConcierge);
+
   useEffect(() => {
     if (role === "SUPERADMIN") {
       users.handleGetUsers();
