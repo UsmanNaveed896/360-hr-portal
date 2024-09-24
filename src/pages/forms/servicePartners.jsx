@@ -203,7 +203,7 @@ const ServicePartners = () => {
             />
             {params.value == "pending" ? (
               <CiEdit
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7"
                 onClick={() => handleOpenStatusModal(params.row)}
               />
             ) : (
@@ -264,11 +264,14 @@ const ServicePartners = () => {
       width: 150,
       renderCell: (params) => (
         <div className="mt-4" style={{ display: "flex", gap: "6px" }}>
-          <MdVisibility
-            className="w-5 h-5"
-            style={{ cursor: "pointer" }}
+       
+           <Typography
+            className="cursor-pointer hover:font-extrabold"
+            variant="h6"
             onClick={() => handleOpenViewModal(params.row)}
-          />
+          >
+            View
+          </Typography>
           {/* <MdEdit
             className="w-5 h-5"
             style={{ cursor: "pointer" }}

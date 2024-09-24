@@ -204,7 +204,7 @@ console.log(rowData,"dddd")
             />
             {params.value == "pending" ? (
               <CiEdit
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7"
                 onClick={() => handleOpenEditModal(params.row)}
               />
             ) : (
@@ -265,12 +265,13 @@ console.log(rowData,"dddd")
       headerName: "Actions",
       width: 150,
       renderCell: (params) => (
-        <div className="flex gap-2 mt-8">
-          <MdVisibility
-            className="cursor-pointer w-5 h-5"
-            onClick={() => handleOpenViewModal(params.row)}
-          />
-        </div>
+        <Typography
+        className="cursor-pointer hover:font-extrabold"
+        variant="h6"
+        onClick={() => handleOpenViewModal(params.row)}
+      >
+        View
+      </Typography>
       ),
     },
   ];
@@ -282,7 +283,7 @@ console.log(rowData,"dddd")
     DOB: operator?.birth_date,
   }));
 
-  console.log(concierge.getConcierge,"getss")
+  
   const renderModalContent = () => {
     let dataToRender;
 

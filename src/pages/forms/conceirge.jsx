@@ -232,7 +232,7 @@ const Concierge = () => {
             />
             {params.value == "pending" ? (
               <CiEdit
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7"
                 onClick={() => handleOpenStatusModal(params.row)}
               />
             ) : (
@@ -302,10 +302,13 @@ const Concierge = () => {
       type: "actions",
       renderCell: (params) => (
         <div className="flex gap-2 mt-1">
-          <MdVisibility
-            className="cursor-pointer w-5 h-5"
+         <Typography
+            className="cursor-pointer hover:font-extrabold"
+            variant="h6"
             onClick={() => handleOpenViewModal(params.row)}
-          />
+          >
+            View
+          </Typography>
           {/* <MdEdit
             className="cursor-pointer w-5 h-5"
             onClick={() => handleOpenEditModal(params.row)}

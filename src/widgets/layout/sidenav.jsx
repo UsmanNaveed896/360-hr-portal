@@ -39,7 +39,7 @@ export function Sidenav({ brandImg, brandName, routes,setOpen,open }) {
             className="uppercase"
             color={sidenavType === "white" ? "dark" : "blue-gray"}
           >
-          <span className="font-bold pr-1 ">Welcome {role == "OPERATIONS" ? "Operation Jobs" : "HR"} </span>  
+          <span className="font-bold pr-1 ">Welcome {role == "OPERATIONS" ? "ADMIN" : "HR"} </span>  
           </Typography>
         </Link>
         <p className="text-sm text-center hover:underline cursor-pointer" onClick={()=>setOpen(!open)}>View Profile Details</p>

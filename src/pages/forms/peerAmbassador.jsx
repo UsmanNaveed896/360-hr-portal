@@ -206,7 +206,7 @@ const PeerAmbassador = () => {
             />
             {params.value == "pending" ? (
               <CiEdit
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7"
                 onClick={() => handleOpenStatusModal(params.row)}
               />
             ) : (
@@ -270,10 +270,13 @@ const PeerAmbassador = () => {
 
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "6px" }} className="mt-6">
-          <MdVisibility
-            className="w-5 h-5 cursor-pointer"
+         <Typography
+            className="cursor-pointer hover:font-extrabold"
+            variant="h6"
             onClick={() => handleOpenViewModal(params.row)}
-          />
+          >
+            View
+          </Typography>
           {/* <MdEdit
             className="w-5 h-5 cursor-pointer"
             onClick={() => handleOpenEditModal(params.row)}
